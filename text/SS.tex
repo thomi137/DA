@@ -1,0 +1,167 @@
+\section{General Considerations}
+We want to propagate the Gross-Pitaevskii equation in time. Therefore we need an efficient algorithm to do so. The method of choice was the so-called 
+split-step operator method, which is based on the fact that a \emph{time-independent} Hamiltonian has an exact solution given by the time-evolution 
+operator.
+The idea is to take apart the Hamiltonian in two parts.
+\begin{equation}\label{eq:ssidea}
+	i\frac{\partial\psi(x, t)}{\partial t}=\left(-\frac{1}{2}\frac{\partial^2}{\partial x^2}+V(x)\right)\psi=\left(\hat{A}+\hat{B}\right)\psi(x, t)
+\end{equation}
+where $\hat{A}=-\frac{1}{2}\frac{\partial^2}{\partial x^2}$ and $\hat{B}=V(x)$. With that, we can write the formal solution
+of~(\ref{eq:ssidea}) as
+\begin{equation}\label{eq:ssstep}
+	\psi(x, t+\Delta t)=e^{-i\Delta t \left(\hat{A}+\hat{B}\right)}\psi(x, t)
+\end{equation}
+It has to be noted however, that this solution is no longer exact as $V$ becomes itself
+time-dependent~\cite{bandraukshen2}, since then, the Hamiltonians at different times do no longer commute, i. e. energy is
+no longer conserved, and $\hat{B}$ would have to be expanded about $t$ to get a more accurate approximation.
+Following~\cite{bandraukshen2}, we now consider the quantity
+\begin{equation}\label{eq:S}
+	S(\hat{A}, \hat{B}, \lambda)= e^{\lambda\left(\hat{A}+\hat{B}\right)}
+\end{equation}
+The idea of the split-step operator method is to expand the quatity $S$ to some order that governs the global quality of the
+method. We can make an expansion about $\lambda$:
+\begin{equation}\label{eq:Sexp}
+	S(\hat{A},\hat{B},\lambda)=S_1(\hat{A}, \hat{B}, \lambda)+\frac{1}{2}\left[\hat{A},\hat{B}\right]\lambda^2+\ldots
+\end{equation}
+Where $S_1(\hat{A}, \hat{B}, \lambda)=e^{\lambda\hat{A}}e^{\lambda\hat{B}}$
+One can further show~\cite{bandraukshen2, suzuki1} that:
+\begin{equation}\label{eq:S2}
+	S(\hat{A}, \hat{B},\lambda)=S_2(\hat{A}, \hat{B},
+	\lambda)+\frac{1}{24}\left[\hat{A}+2\hat{B},\left[A+B\right]\right]\lambda^3+\mathcal{O}(\lambda^4)
+\end{equation} 
+with $S_2(\hat{A}, \hat{B}, \lambda)=e^{\lambda\hat{A}/2}e^{\lambda\hat{B}}e^{\lambda\hat{A}/2}$, which yields an approximation to
+second order using a symmetric decomposition. Going to higher orders usually involves finding imaginary roots of polynomials, which
+would introduce real quantities in the exponentials and consequently, those schemes do not conserve
+unitarity~\cite{bandraukshen2}. This paper also shows, that the quantity $S_2$ is actually accurate to third order for
+time-independent Hamiltonians, which stems from the fact that in this case the operators $\hat{A}$ and $\hat{B}$ do commute at
+different times. 
+I found it not to be practical to go beyond the third-order approximation, since the main effect of the higher accuracy is to slow down the calculations, and one can 
+well account for higher accuracy by simply cutting down the time step. This practice was also adopted by recent work in the field~\cite{gardinerjaksch}. 
+
+\section{The Gross-Pitaevskii Equation}
+\subsection{The Framework}
+We want to solve a nonlinear partial differential equation of the form:
+\begin{equation}\label{eq:generalform}
+	i\frac{\partial \psi}{\partial t}=(\hat{A}+\hat{B})\psi
+\end{equation}
+Where $\hat{A}$ contains all the spatial derivatives and $\hat{B}$ contains the potential terms that are in general functions of x and t. However, 
+for time-independent potentials the exact solution of~(\ref{eq:generalform}) would be:
+\begin{equation}\label{eq:exactsol}
+	\psi(x, t+\Delta t)=e^{\lambda(\hat{A}+\hat{B})}\psi(x, t)
+\end{equation}
+Where $\lambda=i\Delta t$. Considering the above formulae, we are therefore confronted with the problem of splitting this
+time-independent exponential.~\cite{bandraukshen3} states that for such a problem, a symmetric product formula as the above
+to accuracy $\lambda^{2n+1}$ can be given by the recursion scheme
+\begin{eqnarray}
+	e^{\lambda(\hat{A}+\hat{B})}&=&S_{2n+1}+\mathcal{O}(\lambda^{2n+1})\label{eq:recscheme}\\
+	S_{2n+1}(\lambda)&=&S_{2n-1}(\lambda s_{2n+1})S_{2n-1}\left[\lambda(1-2s_{n+1})\right]S_{2n-1}(\lambda s_{2n+1})\,
+	,\nonumber\\
+	2(s_{2n+1})^{2n-1}+(1-2s_{2n+1})^{2n-1}&=&0\, ,\label{eq:polynomial}\\
+	S_3(\lambda)&=&e^{\lambda\frac{\hat{A}}{2}}e^{\lambda\hat{B}}e^{\lambda\frac{\hat{A}}{2}}\label{eq:s3}\nonumber
+\end{eqnarray}
+now adapting the index to the overall accuracy for clarity. It has to be mentioned that these approximants have the advantage of
+being unitary, $S(\lambda)S(-\lambda)=1$ and therefore conserve the norm of the function $\psi(x, t)$ at every time step. The
+roots of the polynomial~(\ref{eq:polynomial}) are such that certain commutators of $\hat{A}$ and $\hat{B}$ vanish. These roots can
+be imaginary when considering schemes of arbitrary precision and thus can introduce some real exponential which does no longer
+conserve the norm and is therefore not very practicable for an imaginary differential equation.
+It is also important to note that $S_3$ already implies the calculation of three exponentials, $S_5$ has seven of them and $S_7$
+has 19. Thus, the computational time needed diverges.~\cite{bandraukshen3} further shows that the accuracy for a given time step
+$\lambda$ can be estimated to $\approx 10^{-6}$, for $S_3$.  
+Our scheme used is therefore given by:
+\begin{equation}\label{eq:ourcscheme}
+	e^{\lambda(\hat{A}+\hat{B})}\approx S_3+\mathcal{O}(\lambda^3)
+\end{equation}
+Still, this leaves us with the problem of calculating the exponential of an operator containing derivatives. Happily however, the Fourier-transform diagonalizes 
+the operator $e^{\frac{\partial^2}{\partial x^2}}$, and we can carry out the calculation in Fourier space rather than having to carry out a matrix multiplication, 
+so the scheme ist of order $N\log N$ in the number of used points. We are now showing how to take a nonlinear Schr\"odinger equation apart.
+We start with:
+\begin{eqnarray}
+	i\frac{\partial \psi}{\partial t}&=&-\frac{\partial^2\psi}{\partial x^2}+g|\psi|^2\psi+V(x)\psi\label{eq:gpeq}\\
+	\psi(x, 0)&=&f(x)
+\end{eqnarray}
+By the special nature of the kick, we can regard the second term of the right-hand side of~(\ref{eq:gpeq}) as a time-independent potential, as only phase-factors are multiplied in, so a more accurate approximation is not needed.
+For a discretized system, the solution to the above equation to third order in $\Delta t$ is given by:
+\begin{equation}\label{eq:thirdordersol}
+	\psi(x, t+\Delta t)=e^{-i\int_t^{t+\Delta t}\left(-\frac{\partial^2}{\partial x^2}+g|\psi|^2+V(x)\right)dt}\psi(x, t)+\mathcal{O}(\Delta t^3)
+\end{equation}
+Then, the exponential can be approximated to second order as:
+\begin{equation}\label{eq:exapprox}
+	e^{-i\int_t^{t+\Delta t}\left(-\frac{\partial^2}{\partial x^2}+g|\psi|^2+V(x)\right)dt}=e^{-i\Delta t \left(-\frac{\partial^2}{\partial x^2}+g|\psi|^2+V(x)\right)}
+\end{equation}
+This is now our workable solution to propagating the Gross-Pitaevskii equation and forms the very fundament of every calculation done.
+
+\subsection{Finding the Groundstate Using the Split-Step Operator Method}
+To calculate the Groundstate of a Bose-Einstein condensate in an optical lattice, one has several possibilities. The method used was
+first to cast the Hamiltonian into its matrix representation, in order to diagonalize it using the LAPACK subroutine DSTEV. However,
+this proved not favourable when considering large couplings, where the system would only slowly converge, if convergence occurred at all,
+and each step involved diagonalizing a whole matrix of linear dimension $\sim 1024$, while only the lowest eigenvector was needed.
+Mainly for this shortcoming, another technique was implemented. When using the split-operator technique as described above and propagating
+in imaginary time, $\tau=it$, the system is obviously no longer normalized. However when renormalizing after each imaginary time step,
+one gradually approaches the exact groundstate. Up to coupling strengths of 10, 20000 iterations proved sufficient to get a
+groundstate that would by later propagation not alter its nature, nor its momentum profile. In this manner, one always applies
+the same operator to the wavefunction, even when
+propagating in real time, which of course adds to numerical stability.
+ Recent work uses more sophisticated methods such as DDS~\cite{kostrun},
+and Collocation with Legendre-Polynomials~\cite{choi}, mainly for the fact that the scheme presented here does not scale very well and is actually quite slow when going to higher
+dimensions. 
+
+\subsubsection{Propagation in Imaginary Time}
+The method of choice applies predominantly to linear systems, yet it can be shown that one can use the same technique for nonlinear
+Schr\"odinger equations (NLSEs). We start with the linear case. Our procedure is to apply the operator
+$\mathcal{T}(\tau)=e^{-\tau\hat{H}}$ to some given initial state $|\psi_0\rangle$. The obtained state is subsequently normalized and we
+optain an iterative procedure:
+	\begin{equation}\label{eq:iter}
+		|\psi_{n+1}\rangle =
+		\frac{\mathcal{T}(\tau)|\psi_n\rangle}{\sqrt{\langle\psi_n\mathcal{T}(\tau)|\mathcal{T}(\tau)\psi_n\rangle}}
+	\end{equation}
+Let us now assume that the eigenstates to the Hamiltonian are known, so that we may express $|\psi_n\rangle$ in terms of these
+eigenstates, $|\psi_n\rangle=\sum_ic_i|\phi_i\rangle$, and that the corresponding eigenvalues are ordered such that
+$|\lambda_0|<|\lambda_1|<\ldots$. Then, the right-hand side of~(\ref{eq:iter}) can be cast in the form:
+	\begin{eqnarray}
+		\frac{\mathcal{T}(\tau)|\psi_n\rangle}{\sqrt{\langle\psi_n\mathcal{T}(\tau)|\mathcal{T}(\tau)\psi_n\rangle}}
+		&=&\frac{\sum_ic_i\mathcal{T}(\tau)|\phi_i\rangle}{\sqrt{\sum_{i,
+		j}c_i^*c_j\langle\phi_i|\mathcal{T}(\tau)\mathcal{T}(\tau)|\phi_j\rangle}}\nonumber\\
+		{}&=&\frac{\sum_ic_ie^{-\tau\lambda_i}|\phi_i\rangle}{\sqrt{\sum_{i}|c_i|^2e^{-2\tau\lambda_i}}}\nonumber\\		
+		{}&=&\frac{\sum_ic_ie^{-\tau\lambda_i}|\phi_i\rangle}{\sqrt{\sum_{i}|c_i|^2e^{-2\tau\lambda_i}}}\cdot\frac{e^{\tau\lambda_0}}{e^{\tau\lambda_0}}\nonumber\\
+		{}&=&\frac{\sum_ic_ie^{-\tau(\lambda_i-\lambda_0)}|\phi_i\rangle}{\sqrt{\sum_{i}|c_i|^2e^{-2\tau(\lambda_i-\lambda_0)}}}\nonumber
+	\end{eqnarray}
+Thus, since by our assumption the exponents remain negative for all $i\neq 0$, one can readily see that this procedure amplifies
+the groundstate $\phi_0$, so that, as $\tau\rightarrow\infty$, the system will be in its groundstate. This proof does however
+only apply to the linear case. Its nonlinear generalization requires an additional component to the ground state, 
+$|\tilde{\phi}\rangle$, obviously satisfying $\langle\tilde{\phi}|\hat{H}|\tilde{\phi}\rangle\leq\lambda_1$, since then, our method is still valid, with the assumption that there is a gap between this state and the first excited state, and therefore a discrete spectrum even for the nonlinear case. It can readily be shown, that the energy levels of the Gross-Pitaevskii equation are indeed discrete\footnote{For a proof for sufficiently smooth potentials, the reader is referred to~\cite{konotop}}, so our method is well applicable here. Using this method, one
+effectively finds the groundstate for arbitrary coupling constants.
+	
+	
+\section{The Code}
+\subsection{C++-Code for the Split-Step Operator Method}
+One of the main goals of this work was to obtain working code that is sufficiently fast to yield results with a decent accuracy.  All the papers cited so far exhibit their results, yet few do comment on the
+method or code used, which slows down the overall implementation since one has to reinvent the wheel. Most of the code accompanying this work was used for testing,
+particularly the code in the oldcode directory, which was used to develop a feeling for the split-step operator method. The main Files needed are
+\texttt{split\_step.h}, 
+\texttt{BEC\_Groundstate.h} and \texttt{fft.h}. The first two implement templated functions and classes to do the timesteps and to find the Groundstate. Provision is made
+for the Groundstate solver to use the Lanczos-Algorithm of the \href{http://www.comp-phys.org/software/ietl/ietl.html}{IETL}, which can be introduced by simply
+implementing the functions needed. The file \texttt{fft.h} contains a C++ wrapper function for the well known \href{http://www.fftw.org}{FFTW}-library to execute
+fourier Transforms. The code will not compile on a system, where fftw Version 3.0.1 is not installed. Also, the code makes use of some data-structures from the
+\href{http://www.boost.org}{Boost}-library, namely uBlas-matrices for the LAPACK routines. At present however, the programs can do without, when finding the
+groundstate with the relaxation method.
+The working of the programs is in short summarized by the following steps:
+\begin{enumerate}
+	\item Parse command line arguments (kick strength, coupling strength, maximum time, $\Delta t$, number of points) if given.
+	\item Find the groundstate and normalize.
+	\item Kick as needed.
+	\item 
+		\textbf{for} t$<$maxt, ++t \textbf{do}:\\
+			\,split\_step\\
+			\,\textbf{if} \textbf{not}(t\%period)\\
+				\,\,print data\\
+			\,\textbf{fi}\\
+		\textbf{done}\\
+\end{enumerate}
+The output is directed to standard output, whence it can be redirected to any file by using the shell of choice.
+\subsection{Perl code}
+In order to optimize the calculation time used on the \href{http://www.asgard.ethz.ch}{Asgard} Beowulf cluster of the ETH, I wrote code that printed various data. In
+order to analyze these files, I wrote a small perl script, \texttt{analyze}, which allowed to do some statistics with calculated histograms. The script
+\texttt{scripter.pl} was used to create PBS jobs on Asgard, taking as command-line arguments the processors needed, the number of nodes and the walltime. The analysis
+of the histogram data is treated further on in the text. 
+
+

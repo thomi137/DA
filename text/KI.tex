@@ -1,0 +1,90 @@
+\section{Kicked Condensates}
+A kick in theory is introduced by a delta peak~\cite{reichl}, having a given kick strength $K$.
+In our split-step operator framework, this is equal to multiplying the wavefunction with a phase factor, 
+thereby leaving its norm untouched.
+My starting point was the delta-kicked rotor, already analyzed in~\cite{reichl} and recently treated quantum mechanically in~\cite{zhang}, where
+it was shown using a split-step operator technique, that for larger couplings between the atoms, the system undergoes a
+transition to chaos when kicked periodically. Such a system is very close to the above mentioned delta-kicked rotor in that
+as the interactions in the mean-field approximation add a nonlinear term to the Schr\"odinger equation. This will render the
+system open to chaotic, or instable behaviour. Chaos is usually not possible in Quantum Mechanics, because of the linearity
+of the Schr\"odinger equation, and it is generally disputed whether or not one can speak of chaos in Quantum Mechanics,
+since the classical definition, e.g. via Lyapounov-exponents~\cite{arnold}, requires some notion of a trajectory, which is
+naturally absent in Quantum Mechanics. However, a nonlinear Schr\"odinger equation exhibits exponential sensitivity to
+initial conditions. As~\cite{zhang} shows, a one-dimensional Bose-Einstein Condensate which is confined to a ring and is then
+periodically kicked, can exhibit quantum anti-resonance (periodic recurrence between different states), which is destroyed
+for large enough coupling constants that render the nonlinearity appreciable. Figure~\ref{fig:zhang} shows quantum anti-resonance and its disappearance when the coupling becomes strong enough
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/zhang}
+\caption{Average energy of a BEC confined to a ring. The nonlinearity destroys quantum anti-resonance. Taken from~\cite{zhang}}
+\label{fig:zhang}
+\end{center}
+\end{figure}
+
+This work examins the effects of a condensate in a trap with an optical lattice superimposed. The condensate is kicked 
+once and subsequently left to its own and it is assumed that the Gross-Pitaevskii equation still holds. The propagation is done using a split-step operator technique both for finding the ground state and
+propagating the system in time. The result will be phase decoherence in momentum-space, owing to the nonlinear term
+in the Gross-Pitaevskii equation, if only the kick that is exerted is strong enough for a given coupling constant.
+For our purposes, tne kick was given by $K\sin(x)\delta(t_k)$, which could be realized in a 
+physical system by tilting the trap in which the
+condensate is contained out of place for a short time. When converting this into an exponential operator, it is seen that 
+for the split-step technique applied to solve this system, we have to multiply
+our wave function by the factor $e^{-iK\sin(x)}$, since the kick is taken to be instantaneous at an arbitrary chosen time $t_k$. 
+As can be analytically shown in the case of the Gross-Pitaevskii equation 
+with no interaction between the atoms, this shifts the momentum-distribution to the right:
+Our analytical system reads:
+\begin{equation}\label{eq:HO}	
+	\left(-\frac{1}{2}\frac{d^2 \psi}{dx^2}+\frac{x^2}{2}\right)\psi = E\psi
+\end{equation}
+This has the very familiar solution $\psi=\frac{1}{\pi^{\frac{1}{4} } }e^{-\frac{x^2}{2} }$. The mean momentum after applying a kick is obtained by observing that:
+\begin{eqnarray}
+\langle p \rangle & = & \frac{1}{i\pi^{\frac{1}{2} } }\int_{-\infty}^{\infty}(x+iK\cos x)e^{-x^2}dx\nonumber\\
+	{}&=&  \frac{1}{\pi^{\frac{1}{2} } }\int_{-\infty}^{\infty}K\cos(x)e^{-x^2}dx\nonumber\\
+	{}&=&  \frac{K}{\sqrt{\pi}e^{\frac{1}{4} } }\textrm{Re}\left(\int_{-\infty}^{\infty}e^{-(x-\frac{i}{2})^2}dx\right)\nonumber\\
+	{}&=&  \frac{K}{e^{\frac{1}{4}}} = 0.77880\cdot K\label{eq:firstmom}
+\end{eqnarray}
+
+This result was mainly mentioned because it serves as a test to the software used; If one kicks a harmonic oscillator in the 
+right way, then the shift in momentum should be exactly the above constant. Furthermore, it serves as a rough estimate on the orders of 
+magnitude of the momentum shift a kick introduces. From this simple calculation, we can then deduce, that the fundamental effect a kick has 
+on a Bose Einstein condensate is to shift its momentum slightly to the right of momentum space, by an amount that is proportional to the 
+Kick strength. One can also see that a symmetric kick, e.g. $e^{-iK\cos x}$ would have had no effect on the mean momentum at all.
+
+Furthermore, we want for the sake of completeness give an analytic estimate for $\langle p^2 \rangle$, since it
+will be important when considering the mean width of the distribution, calculated by $\langle p^2 \rangle -
+\langle p \rangle^2$. We thus proceed along the same lines:
+
+\begin{eqnarray}
+\langle p^2 \rangle &=&
+-\frac{1}{\pi^{\frac{1}{2}}}\int_{-\infty}^{\infty}e^{-x^2}\left[(-x+iK\cos(x))^2+(-1-iK\sin(x))\right]\nonumber\\
+		{}&=&\frac{K^2+e(K^2-1)}{2e}+1\label{eq:secmom}
+\end{eqnarray}
+After a somewhat lengthy calculation that proceeds as the one for~(\ref{eq:firstmom}), dropping the sine term and
+integrating the rest as was shown before.
+The variance can now be given as:
+\begin{equation}\label{eq:variance}
+	 \langle p^2 \rangle-\langle p \rangle^2=\frac{e+(1-2\sqrt{e}+e)K^2}{2e}=\sigma^2
+\end{equation}
+For a normal BEC in a trap having no interaction, this yields a variance of 0.577409 at kick strength $K=1$, which
+was confirmed by a numerical computation of width and mean of the distribution in figure~\ref{fig:confirm}. A point on units has to be made. As I am using a fast Fourier Transform to calculate momentum distributions, the momenta vary from $-\frac{\pi N}{L}$ to $\frac{\pi N}{L}$, where $N$ is the number of points used and $L$ is the overall system size considered. I chose $N=1024$ and $L=10$ to be fitting values for our purposes. As mentioned, the spectrum of momenta is discrete and the unit of momentum would be $\frac{2\pi N}{LN}=\frac{\pi}{5}$. In order to get rid of factors of $\pi$, 
+One can choose the momentum at the boudary of the Brillouin-zone, $q_B=\frac{40\pi}{L}$ as a unit of measurement. This yields a much more comfortable unit for momenta and where not stated otherwise, these units are used.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.4]{figures/confirm}
+\caption{A one dimensional Bose-Einstein Condensate kicked with a strength $K=1$. Note the slight shift to the
+right. With the \texttt{analyze} Perl script, the mean momentum was found to be $\langle p \rangle=0.778801$, which in the above units is at rougly 0.06 and
+$\langle p^2 \rangle-\langle p \rangle^2=0.577409$, which would be about 0.05. Although no Brillouin-zone is present, I chose to normalize
+with the Brillouin vector, in order to get rid of factors of $\pi$.}
+\label{fig:confirm}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.4]{figures/confirm2}
+\caption{A one-dimensional BEC kicked with $K=5$, $\langle p \rangle\approx0.19$ and $\langle p^2\rangle - \langle p \rangle^2\approx 0.09$}
+\label{fig:confirm2}
+\end{center}
+\end{figure}

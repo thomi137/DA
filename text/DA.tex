@@ -1,0 +1,123 @@
+\documentclass[12pt]{book}
+
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\usepackage[pdfauthor={Thomas Prosser}, colorlinks,%
+citecolor=black,%
+filecolor=black,%
+linkcolor=black,%
+urlcolor=black, pdftex]{hyperref}
+\usepackage{epstopdf}
+\else
+\usepackage{graphicx}
+\fi
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{pifont}
+\usepackage{wrapfig}
+\usepackage{psfrag}
+\usepackage{a4}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{fancyhdr}
+\usepackage[small, bf]{caption}
+\setlength{\abovecaptionskip}{0.1cm}
+
+\raggedbottom
+
+\newcommand{\rs}{\rm \scriptscriptstyle}
+\newcommand{\bs}{\bf \scriptscriptstyle}
+\newcommand{\hypergeom}[2]{\mbox{ }_{#1}F_{#2}}
+\newcommand{\entspricht}{\mathrel{\widehat{=}}}
+\newcommand{\realno}{\mathbb{R}}
+\newcommand{\greeksymb}[1]{{\usefont{U}{psy}{b}{n}#1}}
+\newcommand{\bmu}{\mbox{\greeksymb{m}}}
+\newcommand{\bsigma}{\mbox{\greeksymb{s}}}
+\newcommand\circled[1]{\ensuremath{\mathbin{\settowidth{\dimen7}{\mbox{$\bigcirc$}}%
+              \makebox[0.2pt][l]{$\bigcirc$}\makebox[\dimen7]{#1}}}}
+         
+ \fancyfoot{}                            % Delete current footer settings    \renewcommand{\chaptermark}[1]{         % Lower Case Chapter marker style      \markboth{\chaptername\ \thechapter.\ #1}{}} %    \renewcommand{\sectionmark}[1]{         % Lower case Section marker style      \markright{\thesection.\ #1}}         %    \fancyhead[LE,RO]{\bfseries\thepage}    % Page number (boldface) in left on even                                            % pages and right on odd pages    \fancyhead[RE]{\bfseries\leftmark}      % Chapter in the right on even pages    \fancyhead[LO]{\bfseries\rightmark}     % Section in the left on odd pages    \renewcommand{\headrulewidth}{0.3pt}    % Width of head rule         
+              
+\renewcommand{\baselinestretch}{1.0}
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+
+
+\newtheorem{definition}{Definition}
+
+
+
+\begin{document}
+
+\bibliographystyle{plain}
+%\selectlanguage{german}
+\begin{titlepage}
+  \vspace{2.5cm}
+  \begin{center}
+    \vspace{3.5cm}
+    {\huge {\bf  Simulation of a Kicked Bose-Einstein Condensate\\}}
+    \vspace{1.5cm}
+    {\large {\bf Diploma Thesis\\}}
+    \vspace{1.5cm}
+    {Thomas~Prosser\\
+    tprosser@phys.ethz.ch}
+  \end{center}
+\end{titlepage}
+
+\thispagestyle{empty}
+	\newenvironment{dedication}
+		{\cleardoublepage \thispagestyle{empty}\vspace*{\stretch{0.5}}\begin{center} \em}
+		{\end{center} \vspace{\stretch{3}} \clearpage}
+	\begin{dedication}
+		To my father, who would have liked to see this completed.
+	\end{dedication}
+\thispagestyle{empty}
+
+\mainmatter
+%\thispagestyle{empty}
+\tableofcontents
+\pagestyle{fancy}
+
+\chapter*{Introduction}
+In 1925, Einstein predicted that at low temperatures, particles in a gas could reside in precisely the same quantum state. 
+This state however, now referred to as a Bose-Einstein Condensate (BEC),
+was produced only very recently, in 1995~\cite{anderson} with about 2000 ${}^{87}$Rb-Atoms in a quadrupole trap.
+As the name suggests, this state can only be observed with bosons (after S.~N.~Bose, who put forward the fundamental 
+distribution function of particles having integer spin), since for fermions, the Pauli exclusion principle prohibits 
+two spin-$\frac{1}{2}$ particles in exactly the same quantum state. This work considers a  BEC in one dimension at absolute zero, residing in both an optical lattice and a harmonic trap.
+This theoretical system is subsequently kicked, i.e. energy is conveyed
+to the system and it is numerically propagated in time. The effect seen will be a phase decoherence, visible in the broadening of the momentum distribution as a consequence
+of the nonlinearity of the Gross-Pitaevskii equation governing the behaviour of the condensate at low temperatures; Unlike the normal Schr\"odinger equation which is linear, the Gross-Pitaevskii
+equation exhibits a nonlinear term to include interactions between the atoms in the condensate. This nonlinearity is responsible for the instability of the system in the above sense when kicked strong enough.
+
+\chapter{Basics of Bose-Einstein Condensation}\label{ch:BEC}
+\input{BEC}
+\input{KI}
+
+\chapter{The Gross-Pitaevskii Equation}
+\input{GP}
+
+%\chapter{The Bose-Einstein condensate in a trap with a latticel}
+%\input{LA}
+
+\chapter{Numerical Methods}
+\input{SS}
+
+\chapter{Results}
+\input{RE}
+
+\chapter*{Acknowledgements}
+I would like to thank Prof.~Dr.~Matthias Troyer for assigning me to a very interesting and challenging work in Computational Physics, which surely is to become one of the most active fields of research in years to come. My special thanks go to Dr.~Stefan Wessel for all his encouraging discussions and especially for having patience with me.
+
+\listoffigures
+\bibliography{refs}
+
+\end{document}

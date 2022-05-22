@@ -1,0 +1,182 @@
+\section{Interactions of Condensed Atoms}
+In order to derive the Gross-Pitaevskii equation, we will briefly consider the nature of interactions within the condensate. This will basically lead us to 
+recalling scattering theory from basic quantum mechanics~\cite{schwabl}. Since most of the condensates formed to this day where realized with alkali atoms, a 
+treatment in terms of these is widely accepted. The scattering length $a$ is of the order of 100 Bohr radiuses, which means that clouds formed with alkali atoms 
+are dilute in the sense that at any time there is mainly two-particle scattering.
+
+\subsection{Covalent Bonds and the Van der Waals Force}
+When considering polarized atoms such as alkali atoms, one has to bear in mind that 
+since the outer electrons of two different atoms can have opposite spin, they can occupy the same 
+orbital and give therefore an attractive component. This of course is the origin of the covalent bond between atoms.
+At large distances, there is the Van der Waals force between atoms, which has its origin in the electric dipole-dipole interaction
+of the electrons which is however much weaker than that of covalent bonding. Still, as there are more triplet than singlet states for two electrons, and only singlet 
+states can exhibit a covalent bond for two electrons, the Van der Waals force becomes strong in this sense, as in a triplet state, the Pauli exclusion principle 
+prohibits two electrons of the same spin state to be in the same orbital.
+ 
+\subsection{Dimensional Estimate of the Scattering Length}
+All two-body interactions are characterized by the scattering lengths of atoms which one can estimate by a simple dimensional argument,~\cite{pethick}. 
+We have the kinetic energy $\approx\frac{\hbar^2}{mr_0^2}$, where $r_0$ is calculated from the Sch\"odinger equation to be the distance of minimal energy. 
+The electric field of a dipole is roughly$\approx\frac{p_1}{r_0^3}$ where $p_1$ is the dipole moment of the dipole. The induced moment of this dipole, $p_2$, 
+on another dipole is in turn proportional to the field strength, its energy being thereby proportional to the sqare of the electric field of the first dipole, 
+as $p_2\approx|E|$ and $U\approx - p_2|E|\Rightarrow U\approx - \frac{\alpha}{r_0^6}$, whereby we have effectively estimated the Van der Waals energy, and $\alpha$ 
+is some constant introduced on dimensional grounds. Equating the two energies, we get a value of $(\frac{\alpha m}{\hbar})^{\frac{1}{4}}$ for $r_0$. $\alpha$ must be 
+of the form of a typical atomic energy, given by the normal Coulomb form $\frac{e^2}{a_0}$, where $a_0$ is the Bohr radius. To get an energy out of our original form 
+of the Van der Waals potential, we have to multiply this by the sixth power of the atomic length scale $a_0$, and thus $\alpha=C_6e_0^2a_0^5$: 
+\begin{equation}\label{eq:scattering}
+	r_0\approx\left( C_6\frac{m}{m_e}\right)^{\frac{1}{4}}a_0
+\end{equation}
+Which gives us a general magnitude of the scattering length. For alkali atoms, $C_6$ is given e. g. in~\cite{derevianko}. The sign of the interaction is however 
+determined by the short range part, where covalent bonds can be attractive. For alkali atoms, the Van der Waals coefficients are of the order of $10^3$, so a typical
+scattering length is of order $10^2a_0$. 
+
+\section{Scattering theory}
+\subsection{Basic Aspects}
+In order to introduce the scattering length of a sytem, we review quickly some calculations from standard textbooks. For a more thorough treatment, the reader is 
+referred to~\cite{schwabl}. Usually, one considers the eigenstates of the Schr\"odinger equation with energies $E_k = \frac{\hbar^2k^2}{2m}\geq0$ and a certain 
+Potential $V_{scatt}(x)$
+\begin{equation}\label{eq:scattering}
+	\left[-\frac{\hbar^2}{2m}\frac{d^2}{dx^2} + V_{scatt}(x) - E_k\right]\psi_k=0
+\end{equation}
+The exact solution of this equation can be found by using Greens' functions, but one usually considers only distances far away from where the scattering takes place. This might be familiar from the situation of Fraunhofer diffraction. One can then write the wave function in the form:
+\begin{eqnarray}
+	\psi_k(x)&=&e^{ikx} + \frac{e^{ikr}}{r}f_k(\vartheta, \varphi)\label{eq:scattfun}\\
+	f_k(\vartheta, \varphi)&=&-\frac{m}{2\pi\hbar^2}\int d^3x'e^{-i\mathbf{k}'\mathbf{x}'}V(\mathbf{x}')
+\psi_k(\mathbf{x}')\label{eq:scattampl}
+\end{eqnarray}
+Where now the scattering amplitude $f$ does only depend on direction, rather than distance. Effectively, the differential cross-section of scattering is given by:
+\begin{equation}\label{eq:diffxn}
+	\frac{d\sigma}{d\Omega}=|f(\vartheta, \varphi)|^2
+\end{equation}
+Since we are concerned only with low energies, one can consider only s-wave scattering, in which case $f(\vartheta)$ reduces to a constant, since the process is now purely symmetric about the scattering axis. This constant is usually denoted by $-a$. The limit of low energies means that $k\rightarrow 0$, which in turn reduces the two exponentials in~(\ref{eq:scattfun}) to unity, so that a wavefunction in this limit takes the simple form:
+\begin{equation}\label{eq:swavescattfun}
+	\psi=1-\frac{a}{r}
+\end{equation}
+
+%A more thorough treatment of s-wave scattering would proceed along the lines of expanding the axially symmetric wavefunction in terms of Legendre-polynomials 
+%and making the transition to low energies to note that only the polynomial of lowest order $l=0$ does effectively contribute. A very detailed treatment is 
+%given in~\cite{schwabl, pethick}.
+%However, with formula~(\ref{eq:swavescattfun}), we can proceed, plugging the value found for $f$ into~(\ref{eq:diffxn}). The total cross section is naturally 
+%given by integrating over all solid angles:
+%\begin{equation}\label{eq:totalxn}
+%	\sigma=2\pi\int_{-1}^{1}d(\cos(\vartheta))|f|^2=4\pi a^2
+%\end{equation}  
+%However, we have to account for the fact that the particles we are dealing with are bosons, which is why we have to take into account to various scatterings, i. e. 
+%two different ways particles can go, while still remaining completely identical. After the scattering, there is no means of deciding which particle is which, and 
+%therefore, we have to add two scattering probabilities before summing. Thus, the symmetrized wave function of the two-particle system is:
+%\begin{equation}\label{eq:scattfunsym}
+%	\psi=e^{ikz}+e^{-ikz}+\left[f(\vartheta) + f(\pi-\vartheta)\right]\frac{e^{ikr}}{r}
+%\end{equation}
+%If we proceed as before, the cross section is then found to be twice the value of~(\ref{eq:totalxn}), $\sigma=8\pi a^2$. For fermions, 
+%this cross section would of course vanish, since a fermion wavefunction is antisymmetric with respect to exchange of particle coordinates, which would introduce a 
+%negative sign for one of the scattering amplitudes in~(\ref{eq:scattfunsym}).
+
+\subsection{Partial Wave Expansion}
+We briefly recall a fundamental relation of mathematical physics:
+\begin{equation}\label{eq:expexp}
+	e^{i\mathbf{k}\mathbf{x}}=4\pi\sum_{l=0}^{\infty}\sum_{m=-l}^l i^lj_l(kr)Y_{lm}(\Omega_k)^*Y_{lm}(\Omega_x)
+\end{equation}where $j_l$ is the spherical Bessel function, and $\Omega_{k,x}$ are solid angles in momentum and coordinate space, respectively.
+We can assume that the particle is incident on the $z$-axis and drop the $\varphi$-dependence of $f$. We can then expand $f$ in terms of Legendre-polynomials:
+\begin{equation}\label{eq:finleg}
+	f_k(\vartheta)=\sum_{l=0}^{\infty}(2l+1)f_lP_l(\cos\vartheta)
+\end{equation}
+with the partial wave amplitudes $f_l$. For a spherically symmetric solution of~(\ref{eq:scattering}), one can always 
+expand: $\psi_k=\sum_{l=0}^{\infty}i^l(2l+1)R_l(r)P_l(\cos\vartheta)$, because now, the wavefunction does no longer depend on the azimuthal angle. $R_l$ is given in 
+terms of spherical Hankel and Bessel functions, yet we wish to shortcut the somewhat lengthy calculation found in most textbooks on quantum mechanics and briefly state 
+that for weak potentials we have $R_l\approx j_l(kr)$. Furthermore, the same calculation finds $f_l=\frac{e^{i\delta_l}\sin\delta_l}{k}$ where $\delta_l$ are the 
+relative phase shifts a given partial wave experiences during scattering. 
+
+\subsection{Effective Interaction}
+Plugging~(\ref{eq:expexp}) and~(\ref{eq:finleg}) into~(\ref{eq:scattampl}), one arrives after a short calculation~\cite{schwabl} at:
+\begin{eqnarray}
+	f_k(\vartheta)&=&\sum_{l=0}^{\infty}(2l+1)P_l(\cos\vartheta)f_l\label{eq:fexp}\\
+	f_l&=&-\frac{2m}{\hbar^2}\int dr r^2 v(r)j_l(kr)R_l(r)
+\end{eqnarray}
+The fact that the scattering lengths of alkali atoms are rather large compared to atomic scales enables us to go to large distances, where the potential is weak 
+enough for $R_l$ to be approximated by $j_l(kr)$. This means that the scattering process happens with large impact parameters which in turn means that $l$ is large. 
+This is the condition for the Born approximation to apply. The Born approximation basically states that:
+\begin{equation}\label{eq:born}
+	f_k(\vartheta)=-\frac{m}{2\pi\hbar^2}v(\mathbf{k}-\mathbf{k}')
+\end{equation}
+The scattering amplitude is given by the Fourier transform of our potential. When atoms are close together, interactions become very strong. In dilute gases however, this case is very 
+unlikely and the strength of the interactions is small for typical separations. Accordingly, the wave-function is very smooth and varies slowly over space. Should 
+however two atoms come close together, a rapid varying of the wavefunction is to be expected, and one would have to include the short range variations in the 
+calculations. This is however rather impractical, so one introduces the concept of an effective interaction, very similar to the case of an `effective' magnetisation 
+when considering mean-field theory and averaging over all moments surrounding the considered site, rather than forming an average over every possible configuration. 
+The key point here is that short range variations are expected to average out when the system is considered at a larger scale, which means that one keeps the large 
+wavelengths and therefore low energies. In the limit $k\rightarrow0$, $v(k)$ becomes a constant and we have constant $f_k$. By this limiting procedure, one can identify $a$ in~(\ref{eq:swavescattfun}):
+\begin{equation}\label{eq:aborn}
+	a=\frac{m}{4\pi\hbar^2}v(0)
+\end{equation} 
+Thus, the interaction to lowest order is essentially given by the scattering length of the atoms. This result will be important in what is going to follow.
+
+\section{The Gross-Pitaevskii Equation}
+The effective interaction between two bosons for low energies is as was shown above, constant in its momentum representation, $U_0=\frac{4\pi\hbar^2a}{m}$. 
+In coordinate space, this is a contact, or on-site interaction, $U=U_0\delta(\mathbf{r}-\mathbf{r'})$. As we are dealing with a many-body problem for bosons, we adopt a 
+mean-field approach, which accounts for the interactions of one particle with its surrounding particles by a local density, $\varrho(\mathbf{r})=|\psi|^2$. 
+Let $\phi(\mathbf{r})$ be a single particle wavefunction. We can then form the Hartree wavefunction by calculating:
+\begin{equation}\label{eq:Hartreewf}
+	\Psi=\prod_{i=1}^{N}\phi(\mathbf{r}_i)
+\end{equation}
+Here, $N$ is the particle number and $\mathbf{r}_i$ are the coordinates of the $i$-th particle, respecively. Normalisation to unity is understood. As always when using a Hartree-like wavefunction, one has to bear in mind that it does not take into account the correlations of atoms, which is a basic feature of course of Bose-Einstein condensation. We therefore account for correlations with the potential $U_0$. If we now let $V$ be a potential of e.g. a trap, then the Hamiltonian of our many-particle system reads:
+\begin{equation}\label{eq:BECHamiltonian}
+	\hat{H}=\sum_{i=1}^{N}\left[\frac{\hat{\mathbf{p}}_i^2}{2m}+V(\mathbf{r}_i)\right]+U_0\sum_{i<j}
+\delta(\mathbf{r}_i-\mathbf{r}_j)
+\end{equation}
+When plugging~(\ref{eq:Hartreewf}) into~(\ref{eq:BECHamiltonian}), and then integrating the resulting stationary Schr\"odinger equation over all space, we get the energy
+\begin{equation}\label{eq:energfunct}
+	E=N\int d\mathbf{r}\left[\frac{\hbar^2}{2m}|\nabla \phi(\mathbf{r})|^2 + V(\mathbf{r})|\phi(\mathbf{r})|^2 + \frac{N-1}{2}U_0|\phi(\mathbf{r})|^4\right]
+\end{equation}
+Since we have the additional constraint on the particle number, $\int_{-\infty}^{\infty}|\phi|^2dx=N$,  we can take $\phi$ and $\phi^*$ to be arbitrary. If we now form the variation of $E-\mu N$ with respect 
+to $\phi^*$, we arrive at the condition for the functional to be at minimal energy:
+\begin{equation}\label{eq:GrossPitaevskii}
+-\frac{\hbar^2}{2m}\nabla^2\phi(\mathbf{r})+V(\mathbf{r})\phi(\mathbf{r})+U_0|\phi(\mathbf{r})|^2\phi(\mathbf{r})=\mu\phi(\mathbf{r})
+\end{equation}
+Which is generally known as the time-independent Gross-Pitaevskii equation. Note that unlike the Schr\"odinger equation,~(\ref{eq:GrossPitaevskii}) has the chemical potential as an eigenvalue. For Bose-Einstein condensates in which there is no interaction whatsoever between bosons, this is equal to the energy per particle, for interacting particles however, it is not. 
+
+\section{Ground State for Trapped Bosons}
+\cite{pethick} gives solutions to~(\ref{eq:GrossPitaevskii}) in terms of either a Gaussian function for low interactions or a Thomas-Fermi approximation for large ones. This agrees with the fact that when there is no interaction, The ground-state of trapped bosons is given by a Gaussian function, whereas with large interaction, the condensate tends to `spread' out within the trap, which can be imagined as bosons scattering each other and thereby continually spreading out. For our purposes, it is sufficient to consider a variational calculation using a gaussian trial function in one dimension.
+
+\subsection{Variational Calculation for the Ground State}
+We use a Gaussian trial function of the form $\psi(x)=\frac{1}{\sqrt{a}\pi^{\frac{1}{4}}}e^{-\frac{x^2}{2a^2}}$, as one would expect for the normal harmonic oscillator. As was 
+previously mentioned, the interactions basically affect the dimensions of the cloud, which can clearly be seen in figure~\ref{fig:WFSnolak0g1&5}. Plugging the above 
+formula into~(\ref{eq:energfunct}), we obtain for the energy per particle:
+\begin{equation}\label{eq:epp}
+	E=\frac{N}{4a^2}+\frac{Na^2}{4}+\frac{N^2U_0}{2\sqrt{2\pi}a}
+\end{equation}
+Minimizing this with respect to $a$ shows a strong dependence on $U_0$ and if we leave the interaction away, we can recover the usual value for $a^2$, 1 in our case. 
+With this, the wavefunction will be a good approximation as long as the interaction energy is lower than the groundstate energy, which is given here by $\frac{N}{2}$. 
+This can be seen by again setting $a$ equal to one and observing that
+\begin{eqnarray}
+	E&=&N\left(\frac{1}{2}+\frac{NU_0}{2\sqrt{2\pi}}\right)\nonumber\\
+	   &=&\frac{N}{2} + \frac{N^2U_0}{2}\int_{-\infty}^{\infty}|\psi(x)|^4dx\nonumber \\
+	   &=&E_0 + \langle0|v|0\rangle\nonumber
+\end{eqnarray}
+where we have taken $v$ to be the nonlinear part of the Gross-Pitaevskii equation. With this short calculation we have shown that we in fact made a perturbational 
+expansion to first order for the nonlinear interaction term. This is however only valid when $v$ is small compared to the groundstate energy $E_0$.   
+One can clearly see, that the effect of the interaction between atoms is to ``smear'' out the Wavefunction. Figure~\ref{fig:pic}, shows the dependence of $a$ on the coupling. Figure~\ref{fig:WFSnolak0g1&5} shows the numerical calculation of the ground state of the system in one dimension to illustrate the effect of interaction between atoms. As is seen even from this simple calculation, the interaction drives atoms apart, which is what one would expect for a repulsive interaction. Consequently, one also expects a more narrow momentum distribution when changing to momentum space.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=1.0]{figures/pic}
+\caption{The effect of a finite inter-particle interaction is to move the atoms apart. For the particular normalization to unity, the dependence is approximately linear.}
+\label{fig:pic}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/WFSnolax0g1&5}
+\caption{Ground state distributions for two different interaction strengths. No optical lattice has yet been applied}
+\label{fig:WFSnolak0g1&5}
+\end{center}
+\end{figure}
+
+\subsection{Generalisation of the Gross-Pitaevskii Equation}
+Equation~(\ref{eq:GrossPitaevskii}) has the form of a Schr\"odinger equation with a nonlinear distribution that takes into account the interactions between particles. 
+However, as we wish to study a kicked condensate that evolves in time, we have to move to a time-dependent equation of motion for such a condensate. 
+The time-dependent Gross-Pitaevskii equation is given by:
+\begin{equation}\label{eq:GrossPitaevskiit}
+	-\frac{\hbar^2}{2m}\nabla^2\psi(\mathbf{r},t) + V(\mathbf{r})\psi(\mathbf{r},t) + U_0|\psi(\mathbf{r},t)|^2\psi(\mathbf{r},t)=i\hbar\frac{\partial\psi(\mathbf{r},t)}{\partial t}
+\end{equation}
+
+

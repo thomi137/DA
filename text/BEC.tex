@@ -1,0 +1,118 @@
+
+\section{Non-Interacting Bose-Gas}
+The theory of the non-interacting Bose Gas is developed in full in most texbooks on statistical mechanics, 
+so the reader is referred to them for more information about how to calculate the proper statistics. We only want to 
+recall the results briefly.
+
+\subsection{Bose distribution}
+By considering a grand canonical ensemble for bosons~\cite{huang}
+one arrives at the familiar energy  distribution function:
+\begin{equation}\label{eq:Bosedist}
+	f(\varepsilon_{n})=\frac{1}{e^{\frac{\varepsilon_n-\mu}{k_BT}}-1}
+\end{equation}
+Where $\varepsilon_n$ denotes the Energies of the single-particle eigenstates of the system, and $\mu$ is the chemical 
+potential. For high temperatures, 
+the chemical potential is considerably smaller than the minimal energy of the system, 
+as there are very few particles in the same state. As temperature
+falls however, the chemical potential gets comparable to this minimal energy, yet cannot exceed it for the reason that 
+equation~(\ref{eq:Bosedist}) would 
+be negative, which is clearly non-physical. As a consequence, the occupation number of any excited single-particle 
+state cannot exceed the value 
+$\frac{1}{e^{\varepsilon_n-\varepsilon_{min}/k_BT}-1}$. This accounts for the fact that if we consider $N$ particles
+of which less than $N$ are in an excited state, the remaining particles have to be accomodated in the lowest state, 
+the system is then said to exhibit Bose-Einstein
+condensation.
+
+\subsection{The Bose-Einstein Condensate in a Harmonic Trap}
+Bose-Einstein Condensates are usually produced inside a magnetic or optical trap. The first BEC was cooled using
+laser-cooling for the atoms to be slow enough to be held in a magnetic (quadrupole) trap. For details and various
+implementations of several traps, the reader is referred to~\cite{pethick}, as well as to the original article 
+by Anderson et. al.~\cite{anderson}. 
+The traps usually introduce a harmonic potential to the overall Hamiltonian of the system. In our case, we consider 
+a potential of the form:
+\begin{equation}\label{eq:trap}
+	V(x)=\frac{x^2}{2}
+\end{equation}
+Which is the potential one would find for a normal harmonic oscillator. Indeed, if we consider single-particle
+states of bosons and choose units so that $\hbar=1$ and the mass $m=1$, the Hamiltonian for a single particle (and hence for an 
+arbitrary number of particles all
+in the same single particle ground state) reads:
+\begin{equation}\label{eq:trapham}
+	\hat{H}=-\frac{1}{2}\frac{d^2}{dx^2}+V(x)
+\end{equation}
+The solution to the  Schr\"odinger equation for this System is familiar from standard Quantum Mechanics textbooks
+\footnote{A very thorough introduction is given in~\cite{schwabl}}, 
+and it suffices to state that the Groundstate
+of this system is described in position space by the wave-function:
+\begin{equation}\label{eq:HOsol}
+	\frac{1}{\pi^{1/4}}e^{-\frac{x^2}{2}}
+\end{equation}
+which is already normalized to unity. The fact that this system is soluble analytically provides an excellent means of 
+checking the results of the numerical simulations for correctness of the code. However, this treatment does not account for the fact that in real condensates,
+there are actually interactions between the particles and that these interactions are very peculiar to the nature of the atoms in the condensate. As this system has
+stationary states, they do not change and the condensate would therefore stay in exactly this same state. Moreover, as the minimal energy is given and all 
+the particles would come to the minimal energy state, the system would be in its ground state, having no fluctuations at all. In this work, we consider a one-dimensional condensate. Such a system was only recently (2003)
+realized~\cite{moritz}, which gives the system at hand a practical relevance. It is different from the three-dimensional condensate in that it cannot exist at
+finite temperatures. This fact is a direct consequence of the Mermin-Wagner-Hohenberg Theorem, which basically states that there cannot be any spontaneous symmetry
+breaking at finite temperature for one- or two-dimensional systems. A proof for the theorem can be found in the original
+work~\cite{mermin}, applied to
+magnetic systems. Two years later,
+Hohenberg~\cite{hohenberg} pointed out that in the case of a superliquid, the theorem also applies since in a superliquid (and in a Bose-Einstein condensate, for
+that matter), all particles carry exactly the same momentum, which means that the symmetry of such a system is effectively broken. This however cannot occur for a
+one-dimensional system at finite temperature. For the calculations, I refer the reader to the above cited articles. 
+
+\subsection{The Bose-Einstein Condensate in an Optical Lattice}\label{sec:lattice}
+Instead of only confining the Bose-Einstein condensate in a trap of the form~(\ref{eq:trap}), it is also possible to use a potential of the form 
+\begin{equation}\label{eq:trap}
+	\hat{V}_{\textrm{\small lattice}} = s\frac{q_B^2}{2}\sin^2(qx)
+\end{equation}
+where $s$ is some parameter to control the intensity of the lattice. As the name suggests, the lattice is formed by means of lasers, the electric field will be of
+the form $E_0\sin(qx)sin(\omega t)$, where $q$ is just the wave vector of the incident laser
+light, $q=\frac{2\pi}{\lambda}$. As we will see, Bose-Einstein Condensates follow the Gross-Pitaevskii equation~(\ref{eq:GrossPitaevskii}). 
+A solution for the
+Ground-state for this equation in the one-dimensional case can be given in terms of its Fourier series:
+\begin{equation}\label{eq:latticegs}
+	\psi_0=\sum_{l=0,\pm 1, \ldots}\psi_le^{\frac{il2\pi x}{d}}
+\end{equation}
+$d$ being the lattice constant, $d=\frac{\lambda}{2}$, and $\psi_l=\frac{1}{d}\int_{-\frac{d}{2}}^{\frac{d}{2}}\psi_0e^{-\frac{il2\pi x}{d}}dz$, as usual. The behaviour of
+the wave function is best shown in momentum space. Thus, we form the Fourier transform of the above function, again using units such that $\hbar=1$:
+\begin{eqnarray}
+	\psi_0(p)&=&\int_{-\infty}^{\infty}\sum_{l=0,\pm 1, \ldots}\psi_le^{\frac{i2\pi l x}{d}}e^{-ipx}dx\nonumber\\
+		{}&=&\sum_{l=0,\pm 1, \ldots}\psi_l\int_{-\infty}^{\infty}e^{-ix(p-\frac{i2\pi l x}{d})}dx\nonumber\\
+		{}&=&2\pi\sum_{l=0,\pm 1, \ldots}\psi_l\delta(p-\frac{2\pi l}{d})\nonumber
+\end{eqnarray}
+Thus, it is seen that the momentum distribution is given by a sum of delta peaks. However, we want to consider a condensate that is kicked, so we have to incorporate some means of kicking, which is
+experimentally done by tilting the trap out of the axis for a short time. Therefore, apart from the lattice, we also have to add a trap. This however is just the superposition of 
+two potential terms. 
+The lattice in the potential was added by simply adding the term $\frac{q_B^2}{2}\sin^2(q_Bx)$~\cite{menotti}, where $q_B$ is the wavevector 
+at the boundary of the first Brillouin zone, $q_B=\frac{\pi}{a}$ and $a$ is the lattice constant. The Groundstate of such a potential is shown 
+in the figures below. 
+The form of the lattice is not arbitrary. The factor $\frac{q_B^2}{2}$ arises, because of the recoil energy an atom acquires when absorbing a 
+photon with momentum $q$. As the field produced by a laser which is normally used to produce a lattice is $E_0\sin(qx)\sin(\omega t)$, the time-averaged 
+field is then proportional to $\sin^2(qx)$~\cite{pitaevskii}.
+It has to be noted, that the dynamics are non-trivial, because of the nonlinearity that arises from the interatomic interactions. It is most fitting to 
+use numerical techniques. The following pictures will illustrate the nature of the Ground state further. 
+Let now the potential be of the form above, and let the atoms be trapped with the normal harmonic potential. The overall external potential is then periodic. 
+Let again $\psi(x)$ be the wavefunction of a one dimensional Bose-Einstein condensate still obeying the equation~(\ref{eq:GrossPitaevskii}). As is explained above, Figures~\ref{fig:WFk0g1} and~\ref{fig:WFk0g5} show the first two sattelite peaks, that 
+are obtained in precisely this way.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{figures/WFk0g1}
+\caption{Ground state distribution of a Bose-Einstein condensate in a periodic potential and its corresponding momentum distribution with
+		$g=1$}
+\label{fig:WFk0g1}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{figures/WFk0g5}
+\caption{Same as figure \ref{fig:WFk0g1} with $g=5$}
+\label{fig:WFk0g5}
+\end{center}
+\end{figure}
+
+
+
+		

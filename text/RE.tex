@@ -1,0 +1,246 @@
+\section{The System under consideration}
+As was pointed out above, the goal was to implement the simulation of a Bose-Einstein condensate
+that obeys Gross-Pitaevskii dynamics and is trapped in some harmonic trap with a lattice superimposed to it.
+The ground state is found using imaginary time propagation. As soon as the ground state is reached, a kick
+of the form $K\sin(x)$ is exerted on the system, which is in turn propagated for a certain time afterwards. 
+As was shown, the main effect of the kick is to shift the peak of the momentum distribution to the right.
+However, when kicks become strong enough, the system shows a rapid decoherence, in that the momentum
+distribution begins to spread out very rapidly over the whole spectrum.
+Our system follows the equation
+	\begin{equation}\label{eq:oursys}
+		i\frac{\partial\psi}{\partial t}=\left(-\frac{1}{2}\frac{\partial^2}{\partial x^2}+g|\psi|^2+\frac{1}{2}x^2
+		+\frac{q_B^2}{2}\sin^2(qx)\right)\psi
+	\end{equation}
+where $q_B$ and $q$ are as was already mentioned the momentum at the Brillouin-zone boundary and the
+reciprocal lattice constant, respectively. 
+
+\section{``Phase Space'' Plots of the BEC}
+In order to visualize the transition to chaotic behaviour in the first place, and to find out what kick strengths are needed for the system to become instable, one can use a technique familiar from classical mechanics on the following grounds: Without interaction between the atoms, the BEC can be seen as a normal harmonic oscillator, treated quantum mechanically. As the only new physics are a discrete energy spectrum and a probability amplitude instead of a trajectory, the system remains stable in the sense that the peak of position and momentum distributions oscillate back and forth, and are reflected at the walls of the trap. Thus, one can visualize the system in a ``phase space'' for mean position and mean momentum. If the system is stable, the oscillation of mean position ($\langle x\rangle$) and mean momentum ($\langle p \rangle$) can be seen as the trajectory of a normal oscillator, describing a circle. When becoming unstable however, the time dependence of the above averages should no longer follow simple curves and consequently fill up all of the phase space.  Figure~\ref{fig:PSkto3} shows the same system kicked with various strengths to illustrate the stability of the system for small $K$. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/PSkto3}
+\caption{Mean position versus mean momentum for various values of K. The interaction is set to $g=0.1$.}
+\label{fig:PSkto3}
+\end{center}
+\end{figure}
+
+If one subsequently applies a larger kick, e.g. $K=6$, the system becomes unstable. The mean momentum and mean position do no longer oscillate, as Figure~\ref{fig:PSk6} indicates. The coupling strength $g$ was deliberately kept at a low value so as not to introduce too much numerical ``noise''. It is seen that transition to chaos eventually occurs, since it is the nonlinearity that eventually drives the system to instability, when kicked hard enough. Naturally, as will be shown below, for larger values of $g$, the system will ``surrend'' at smaller $K$. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/PSk6}
+\caption{Mean position versus mean momentum for  $K=6$. The interaction is set to $g=0.1$.}
+\label{fig:PSk6}
+\end{center}
+\end{figure}
+
+The following figure shows the same behaviour but without the lattice underneath. Note that the results are very similar, since, as was seen before, in coordinate space the effect of the lattice is to 
+produce wiggles in the distribution and sattellite peaks in momentum space, so when averaging over all values, one basically recovers the same results. These pictures do only show that the system can be made unstable by kicking strong enough, yet nothing is known about the way the momenta are distributed:
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/PSnolakto3}
+\caption{Mean position versus mean momentum for various values of K. The interaction is set to $g=0.1$. The main effect of the lattice is to introduce wiggles.}
+\label{fig:PSnolakto3}
+\end{center}
+\end{figure}
+
+\section{Momentum Distributions at Various Times}
+It was put forward that at a given kick strength, the system at hand shows phase decoherence, which expresses itself in a momentum distribution that `smears' out. Apart from truncation errors, momenta spread out over the whole Brillouin zone of the lattice. Figure~\ref{fig:momdistk6g5} shows this behaviour. As time passes, the distribution gets wider. The widening of the spectrum is not clearly seen from this figure, yet it was added to show time propagation of the distribution and to visualize the behaviour of the BEC when kicked. Already at the moment of the kick ($t=0$), one can see decoherence in momentum space, as the kick is strong enough. As time passes, the momenta spread out over essentially the whole Brillouin-zone and we have a decoherent system.~\cite{esslinger} produced such a system in 2002 by applying a magnetic field gradient to a BEC and afterwards found the system in a dephased state. A better technique for analyzing the widening of the distributions will be presented later in the text. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/momdistk6g5}
+\caption{Momentum distribution after kicking with $K=6$ and $g=5$, at different times. The orders of magnitude are clearly decreasing.}
+\label{fig:momdistk6g5}
+\end{center}
+\end{figure}
+
+In order to quantify in some way the broadening of the spectrum with increasing $K$, one has to resort to an averaging
+over time that does not focus on some given moment in time, but rather takes into account the developement of the past as well.
+Having such an average, one can quite definitely make predictions about in what way the momenta spread. In the following
+section, an averaging technique borrowed from electrical engineering and econometrics is introduced and used to look at momentum distributions at various times.
+
+\section{Widths of Momentum Distributions}
+\subsection{The Exponentially Weighted Moving Average.}
+In averaging the distributions, I used a so-callled exponentially weighted moving average (EWMA), which is used when placing more weight on more recent data.
+Let $x_k$ be some measurement at time $k$. The normal moving average is formed by:
+	\begin{equation}\label{eq:normalma}
+		\bar{x}_k=\frac{1}{n}\sum_{i=k-n+1}^{k}x_i
+	\end{equation}
+Taking one additional point, this becomes:
+\begin{eqnarray}
+	\bar{x}_{k+1}&=&\frac{1}{n+1}\sum_{i=k-n+1}^{k+1}x_i\nonumber\\
+			{}&=&\frac{1}{n+1}\left[x_{k+1}+n\bar{x}_k\right]\nonumber\\
+			{}&=&\frac{1}{n+1}x_{k+1}+\frac{n}{n+1}\bar{x}_k
+\end{eqnarray}
+Let now the filter-constant be $\alpha=\frac{n}{n+1}$. Naturally, for $n>1, \alpha<1$. The exponentially weighted moving average is then formed by calculating:
+	\begin{equation}\label{eq:ewma}
+		\bar{x}_{k+1}=\alpha\bar{x}_k+(1-\alpha)x_{k+1}
+	\end{equation}
+where $x_{k+1}$ is the value of x at time $k+1$. The value $\bar{x}_{k+1}$ is then taken to be the real value, which has now filtered out truncation errors that come from finite machine precision.
+Upon further expansion backwards, it is easily seen, that the most recent value or distribution in our case gets the biggest weight, whereas the other distributions are weighted with higher powers of $\alpha$. Hence the name ``exponentially weighted''. It is a means for weighting the more recent data more heavily than the past ones, while still ``remembering'' them. For further details the reader is referred to~\cite{ewma}. With this momentum distributions, it is seen that as the kick gets stronger, the width of the distribution increases. This is the same phenomenon which is seen in figure~\ref{fig:momdistk6g5}, and the main result of my analysis.
+
+\subsection{Widths}
+Using the EWMA, the distribution at each time step was averaged in the sense above, replacing the filtered value with the actual one at a given time.
+Then, at given intervals of $2\pi$, the distributions were printed out yielding a series of distributions for a given kick strength. For each of those distributions, the variance was measured, and subsequently averaged. Furthermore, the mean deviation of the variance so obtained was calculated, which is shown as an error bar for each data point in the following figures. Figure~\ref{fig:width} shows the mean variance ($\langle\sigma\rangle$) of the momentum distribution averaged over time for a given kick strength.
+Figure~\ref{fig:visu} should give some impression on how the distributions were averaged.
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=2]{figures/visu}
+\caption{EWMA. The actual distribution was replaced by an EWMA distribution that takes into account the history of the condensate. The weight is increasing towards the distribution that is considered.}
+\label{fig:visu}
+\end{center}
+\end{figure}
+
+
+As the error bars indicate, this quantity does not fluctuate much, yet the with rising $K$, one observes a broadening of the momentum distribution. As was mentioned before, the main effect of the nonlinearity is to broaden the ``cloud'' of the condensate as a whole. Consequently, the momentum distribution is narrower than for a noninteracting system. In the figures following, one can clearly see that the curve for $g=5$ lies lower than the one for $g=1$. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/width}
+\caption{Time-averaged width of the momentum histograms as a function of $K$.}
+\label{fig:width}
+\end{center}
+\end{figure}
+
+As figure~\ref{fig:width} suggests, for small $K$, The width does not alter nor does it vary much. This is consistent with the
+observation that the mean momentum basically oscillates between two extreme values of the same order of magnitude as was
+calculated by using the variational approach. Figure\ref{fig:meanmomk2/3g1} shows this fact. However, this oscillatory pattern is distorted when
+going to $K=3$, and the instability sets in at $K\sim 4$, as the subsequent figures show. 
+
+\begin{figure}[H]
+	\centering
+	\mbox{\subfigure[$K=2$]{\includegraphics[scale=0.3]{figures/meanmomk2}}
+		\subfigure[$K=3$]{\includegraphics[scale=0.3]{figures/meanmomk3}}
+		}
+	\caption{Mean momentum of a BEC in a lattice when kicked with different kick strengths, $g=1$}\label{fig:meanmomk2/3g1}
+\end{figure}
+	
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[scale=0.6]{figures/meanmomk2}
+%\caption{Mean momentum of a BEC in a lattice after kicking with $K$=2, $g=1$.}
+%\label{fig:meanmomk2}
+%\end{center}
+%\end{figure}
+
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[scale=0.6]{figures/meanmomk3}
+%\caption{Same as figure~\ref{fig:meanmomk2}, but $K=3$, $g=1$.}
+%\label{fig:meanmomk3}
+%\end{center}
+%\end{figure}
+
+It is clear that when exerting a kick to the condensate, one obviously enhances momenta and consequently, the energy of the system is augmented by a factor that is proportional
+to the kick strength squared. However this energy competes with the interaction energy. If the Interaction term is strong enough, transition to a Mott-insulator state can occur~\cite{esslinger, jaksch}, which is however no longer governed by the Gross-Pitaevskii equation, yet it is of course another instance of a state showing phase decoherence, as the atoms arrange in a way as to fill the lattice, having commensurate filling on the lattice sites. 
+Our system can be considered in second quantized notation:
+\begin{equation}\label{eq:Bosehubbard}
+\hat{H}=-J\sum_{\langle i, j\rangle}\hat{a} ^{\dagger}_i\hat{a}_j+\sum_i\varepsilon_i\hat{n}_i+\frac{1}{2}U\sum_i\hat{n}_i\left(\hat{n}_i-1\right)
+\end{equation}
+which is a Bose-Hubbard model~\cite{jaksch}. $J$ is the tunneling (or hopping) matrix element between two adjacent sites and $\varepsilon_i$ is the energy offset due to the external potential. $U$ is the familiar on-site interaction between the atoms. For this system, it can be shown that a transition to a Mott-insulator occurs if $\frac{U}{J}=z\cdot 5.8$, where $z$ is the number of nearest neighbours. The system in our application is at all times far off this critical limit, as the lattice potential is greater than $U$ by one order of magnitude, yet the decoherency is visible and is a result of the nonlinearity of the Gross-Pitaevskii equation, as was already mentioned. It is also shown in~\cite{esslinger} that a decoherency produced in this way does not vanish, even when the trap potential is switched off adiabatically, in contrast to the Mott-insulator state, where coherence is rapidly restored. This indicates that the decoherence is due to the physics of the system (i.e. the Gross-Pitaevskii equation) and not due to a dephasing of the condensate wavefunction, which would eventually restore the interference pattern. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/meanmomk3g5}
+\caption{Mean momentum of a BEC in a lattice when kicked with $K=3$, $g=5$.}
+\label{fig:meanmomk3g5}
+\end{center}
+\end{figure}
+
+When doubling the points used in the calculations or cutting the timestep $\Delta t$ by half, one recovers essentially the same pattern, as figure~\ref{fig:meanmomk3finet} shows. However, the noise in the pattern stems from the kick, which shows that instability slowly sets in.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/meanmomk3finet}
+\caption{Mean momentum of a BEC in a lattice when kicked with $K=3$, $g=5$, but with half the timestep and doubled number of points.}
+\label{fig:meanmomk3finet}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\mbox{\subfigure[$K=4$]{\includegraphics[scale=0.3]{figures/meanmomk4}}
+		\subfigure[$K=5$]{\includegraphics[scale=0.3]{figures/meanmomk5}}
+		}
+	\caption{Mean momentum of a BEC in a lattice when kicked with different kick strengths, $g=1$}\label{fig:meanmomk4/5g1}
+\end{figure}
+
+
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[scale=0.6]{figures/meanmomk4}
+%\caption{Same as figure~\ref{fig:meanmomk2}, $K=4$, $g=1$.}
+%\label{fig:meanmomk4}
+%\end{center}
+%\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.4]{figures/meanmomk4g5}
+\caption{Mean momentum of a BEC in a lattice when kicked with $K=4$, $g=5$.}
+\label{fig:meanmomk4g5}
+\end{center}
+\end{figure}
+
+
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[scale=0.6]{figures/meanmomk5}
+%\caption{Same as figure~\ref{fig:meanmomk2}, $K=5$, $g=1$.}
+%\label{fig:meanmomk5}
+%\end{center}
+%\end{figure}
+
+The oscillatory pattern in the above figures is due to the lattice, but when the system is kicked strong enough, one can effectively drive the system to a completely unstable state, as is show in the next plot.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.4]{figures/meanmomk8}
+\caption{Mean momentum of a BEC in a lattice when kicked with $K=8$, $g=1$.}
+\label{fig:meanmomk8}
+\end{center}
+\end{figure}
+
+These figures suggest a critical value of $K$ between 3 and 4. If one leaves away the lattice the initial width is considerably
+smaller, the distribution not having satellite peaks. Even without a lattice, one can prepare an instable system. The effect of the lattice is, as was pointed out above and as can be seen in figures~\ref{fig:WFk0g1} and~\ref{fig:WFk0g5}, to introduce wiggles in the wavefunction. The lattice sites tend to bind the atoms of the condensate. If one leaves away the lattice, there should not be any changes to the behaviour for large kick strengths, since, as was pointed out by Greiner et. al.~\cite{esslinger}, a decoherent system that is not produced by transferring it to a Mott-insulator, stays decoherent when obeying the Gross-Pitaevskii equation. 
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/widthnola}
+\caption{Time-averaged width of the momentum histograms as a function of $K$, without lattice.}
+\label{fig:widthnola}
+\end{center}
+\end{figure}
+
+The corresponding plots for a condensate in a trap without a lattice and for a free condensate have also been included.
+It seems to be striking that the lattice is introducing or rather accentuating levels at which the width does not change when being exposed to a larger kick. This fact could be the subject of further investigation.
+When kicking either a free condensate or one in an optical lattice for that matter, one has to bear in mind that the simulation cannot realize an infinite system, but still there are periodic boundaries, whose effects now become more important. One of those effects is to still confine the wavefunction, since the condensate wavefunction would not be an element of the Hilbert space and therefore non-physical. Thus, when applying rigid walls no matter how far away, the wavefunction will be of a cosine form and therefore, the kick will still have the same effect of shifting the momentum distribution to the right and consequently, the spectrum is widened. When there is a lattice in addition, there will be a stabilizing effect for the reasons already cited.
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/widthnotrap}
+\caption{Time-averaged width of the momentum histograms as a function of $K$, without a trap.}
+\label{fig:widthnotrap}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.6]{figures/widthnothing}
+\caption{Time-averaged width of the momentum histograms as a function of $K$ for a free condensate.}
+\label{fig:widthnothing}
+\end{center}
+\end{figure}
+
+\subsubsection{Parameters}
+Usually, $N=1024$ points proved to be enough points to give sensible results. Going to larger sytems mainly increases runtime of the programs. The timestep was measured in units of $2\pi$, where it proved sufficient to divide this interval by $10^{4}$. 
+
+\section{Conclusion}
+Using the split-step operator technique to solve nonlinear partial differential equations, a one-dimensional Bose-Einstein condensate in a trap with a lattice was simulated. Kicks of various strengths have been applied and the system was shown to undergo a transition to instability after applying the kick. This can be seen best by considering the momentum distribution and its width when averaged over time. While in the stationary case, momenta are locked, the kick leads to a decoherence in momentum space. This accounts for the fact that the width of the momentum spectrum increases, when larger kicks are exerted. The system is very similar to that found by Greiner et. al.~\cite{esslinger}, in that when exerting a kick, one dephases the system by an onset of additional energy proportional to $K^2$.  This energy, which is initially purely kinetic, tends to compete with the interaction energy. Kinetic energy raises the tunneling amplitude for the lattice. In consequence however, the interaction energy is raised. \cite{esslinger} has shown that for lattices that are deep enough, a system rapidly undergoes a phase transition to a Mott-insulator state for the fact that the tunneling amplitude is comparable to the interaction energy. This is a decoherent state, since there are exactly the same number of atoms on each lattice site, which accounts for an essentially flat momentum histogram by the Heisenberg uncertainty principle. However, coherence is restored a few milliseconds after switching off (or reducing) the potential, whereas for a system that was prepared to be decoherent by ways of e.g. a kick, this does not happen, since the decoherence stays ``intact'' by the nonlinearity of the Gross-Pitaevskii equation governing the Bose-Einstein condensate.  Some plots of a somewhat artificial phase space have been added to show this instable behaviour in terms of mean momentum and mean position. At the onset of the instability, the system of course tends to cover the whole phase space, which again accounts for the fact that when a system becomes unstable, mean momentum and mean position can take all possible values allowed by the overall energy of the system. This again expresses the fact of decoherence, as when momena are randomly distributed over the Brillouin-zone, so is its mean value.

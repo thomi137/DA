@@ -1,0 +1,34 @@
+\BOOKMARK [0][-]{chapter.1}{Basics of Bose-Einstein Condensation}{}
+\BOOKMARK [1][-]{section.1.1}{Non-Interacting Bose-Gas}{chapter.1}
+\BOOKMARK [2][-]{subsection.1.1.1}{Bose distribution}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.2}{The Bose-Einstein Condensate in a Harmonic Trap}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.3}{The Bose-Einstein Condensate in an Optical Lattice}{section.1.1}
+\BOOKMARK [1][-]{section.1.2}{Kicked Condensates}{chapter.1}
+\BOOKMARK [0][-]{chapter.2}{The Gross-Pitaevskii Equation}{}
+\BOOKMARK [1][-]{section.2.1}{Interactions of Condensed Atoms}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.1.1}{Covalent Bonds and the Van der Waals Force}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.2}{Dimensional Estimate of the Scattering Length}{section.2.1}
+\BOOKMARK [1][-]{section.2.2}{Scattering theory}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.2.1}{Basic Aspects}{section.2.2}
+\BOOKMARK [2][-]{subsection.2.2.2}{Partial Wave Expansion}{section.2.2}
+\BOOKMARK [2][-]{subsection.2.2.3}{Effective Interaction}{section.2.2}
+\BOOKMARK [1][-]{section.2.3}{The Gross-Pitaevskii Equation}{chapter.2}
+\BOOKMARK [1][-]{section.2.4}{Ground State for Trapped Bosons}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.4.1}{Variational Calculation for the Ground State}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.2}{Generalisation of the Gross-Pitaevskii Equation}{section.2.4}
+\BOOKMARK [0][-]{chapter.3}{Numerical Methods}{}
+\BOOKMARK [1][-]{section.3.1}{General Considerations}{chapter.3}
+\BOOKMARK [1][-]{section.3.2}{The Gross-Pitaevskii Equation}{chapter.3}
+\BOOKMARK [2][-]{subsection.3.2.1}{The Framework}{section.3.2}
+\BOOKMARK [2][-]{subsection.3.2.2}{Finding the Groundstate Using the Split-Step Operator Method}{section.3.2}
+\BOOKMARK [1][-]{section.3.3}{The Code}{chapter.3}
+\BOOKMARK [2][-]{subsection.3.3.1}{C++-Code for the Split-Step Operator Method}{section.3.3}
+\BOOKMARK [2][-]{subsection.3.3.2}{Perl code}{section.3.3}
+\BOOKMARK [0][-]{chapter.4}{Results}{}
+\BOOKMARK [1][-]{section.4.1}{The System under consideration}{chapter.4}
+\BOOKMARK [1][-]{section.4.2}{``Phase Space'' Plots of the BEC}{chapter.4}
+\BOOKMARK [1][-]{section.4.3}{Momentum Distributions at Various Times}{chapter.4}
+\BOOKMARK [1][-]{section.4.4}{Widths of Momentum Distributions}{chapter.4}
+\BOOKMARK [2][-]{subsection.4.4.1}{The Exponentially Weighted Moving Average.}{section.4.4}
+\BOOKMARK [2][-]{subsection.4.4.2}{Widths}{section.4.4}
+\BOOKMARK [1][-]{section.4.5}{Conclusion}{chapter.4}

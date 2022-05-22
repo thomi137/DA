@@ -1,0 +1,36 @@
+\contentsline {chapter}{\numberline {1}Basics of Bose-Einstein Condensation}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Non-Interacting Bose-Gas}{5}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Bose distribution}{5}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}The Bose-Einstein Condensate in a Harmonic Trap}{6}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}The Bose-Einstein Condensate in an Optical Lattice}{7}{subsection.1.1.3}
+\contentsline {section}{\numberline {1.2}Kicked Condensates}{9}{section.1.2}
+\contentsline {chapter}{\numberline {2}The Gross-Pitaevskii Equation}{15}{chapter.2}
+\contentsline {section}{\numberline {2.1}Interactions of Condensed Atoms}{15}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Covalent Bonds and the Van der Waals Force}{15}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Dimensional Estimate of the Scattering Length}{15}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}Scattering theory}{16}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Basic Aspects}{16}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Partial Wave Expansion}{17}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Effective Interaction}{17}{subsection.2.2.3}
+\contentsline {section}{\numberline {2.3}The Gross-Pitaevskii Equation}{18}{section.2.3}
+\contentsline {section}{\numberline {2.4}Ground State for Trapped Bosons}{19}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Variational Calculation for the Ground State}{19}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Generalisation of the Gross-Pitaevskii Equation}{22}{subsection.2.4.2}
+\contentsline {chapter}{\numberline {3}Numerical Methods}{23}{chapter.3}
+\contentsline {section}{\numberline {3.1}General Considerations}{23}{section.3.1}
+\contentsline {section}{\numberline {3.2}The Gross-Pitaevskii Equation}{24}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}The Framework}{24}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Finding the Groundstate Using the Split-Step Operator Method}{25}{subsection.3.2.2}
+\contentsline {subsubsection}{Propagation in Imaginary Time}{26}{section*.3}
+\contentsline {section}{\numberline {3.3}The Code}{27}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}C++-Code for the Split-Step Operator Method}{27}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Perl code}{28}{subsection.3.3.2}
+\contentsline {chapter}{\numberline {4}Results}{29}{chapter.4}
+\contentsline {section}{\numberline {4.1}The System under consideration}{29}{section.4.1}
+\contentsline {section}{\numberline {4.2}``Phase Space'' Plots of the BEC}{29}{section.4.2}
+\contentsline {section}{\numberline {4.3}Momentum Distributions at Various Times}{32}{section.4.3}
+\contentsline {section}{\numberline {4.4}Widths of Momentum Distributions}{34}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}The Exponentially Weighted Moving Average.}{34}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Widths}{34}{subsection.4.4.2}
+\contentsline {subsubsection}{Parameters}{44}{section*.4}
+\contentsline {section}{\numberline {4.5}Conclusion}{44}{section.4.5}
