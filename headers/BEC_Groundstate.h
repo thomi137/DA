@@ -21,8 +21,7 @@
 //MATRIX should be some Matrix type provided by MTL or ublas.
 using namespace std;
 
-//a handy definition...
-const double pi = 4*atan(1.0);
+
 
 #ifndef IETL_LANCZOS_H
 //two VERY handy declarations...
@@ -79,10 +78,10 @@ class solver<MATRIX, VECTOR, Lanczos>{
 		template<class Out>
 		void diag(Out res);
 		void re_init(const VECTOR& start);
-		
+
 	private:
 		typedef VECTOR::value_type value_type;
-		typedef boost::numeric::ublas::vector<value_type> uvector;	
+		typedef boost::numeric::ublas::vector<value_type> uvector;
 		typedef boost::lagged_fibonacci607 Gen;
 		typedef ietl::vectorspace<uvector> Vecspace;
 		Gen mygen;
@@ -94,16 +93,16 @@ class solver<MATRIX, VECTOR, Lanczos>{
 		VECTOR::iterator start, end;
 		std::vector<int> mult_;
 		std::vector<uvector> eigenvec_;
-		MATRIX Rmat_;	
-        
-};//specialisation for Lanczos.	
+		MATRIX Rmat_;
+
+};//specialisation for Lanczos.
 		*/
-		
+
 //The little class that could...
 template<class T, class MATRIX, class VECTOR, class DiagPolicy, bool Lattice, bool Trap>
 class Hamiltonian{
 public:
-        Hamiltonian(const int& N, const T& L, const T& g, const VECTOR& psi, int upper_limit, bool withit);		
+        Hamiltonian(const int& N, const T& L, const T& g, const VECTOR& psi, int upper_limit=1000, bool withit=false);
         //copy constructor not yet needed, default can be used. See Sutter on exception-safety.
         //~Hamiltonian(); 
         //default constructor ok, the only critical part is in solver, which is destroyed when Hamiltonian is...
@@ -162,74 +161,14 @@ void solver<T, MATRIX, VECTOR, FullDiag, Lattice, Trap>::re_init(const VECTOR& s
     init(pot);
 }
 //this concludes the implementation of solver 1.
-/*
-//solver 2
-template<class MATRIX, class VECTOR>
-solver<MATRIX, VECTOR, Lanczos>::solver(const int& N, const double& L, const double& g, const VECTOR& psi)
-		:N_(N), L_(L), g_(g), psi_(psi), deltax(L/double(N_)), q_(pi*L/5.), Rmat_(N_, N_), vec(N_){
-	init();
-	}
-	
-template<class MATRIX, class VECTOR>
-void solver<MATRIX, VECTOR, Lanczos>::init(){
-	for(int i = 0; i<Rmat_.size1(); ++i){
-		double xpos =L_*0.5-double(i)*L_/double(N_);
-        	double sinx =sin(q_*xpos);
-		for(int j = 0; j<Rmat_.size2(); ++j){ 
-			Rmat_(i,j)=((i==j)?1./(deltax*deltax)+g_*psi_[i]*psi_[i]+xpos*xpos*0.5+q_*q_*0.5*sinx*sinx
-					: ((i==j-1)||(i==j+1))? -0.5/(deltax*deltax):0);
-		}
-	}
-}
 
-template<class MATRIX, class VECTOR>
-template<class Out>
-	void solver<MATRIX, VECTOR, Lanczos>::diag(Out res){
-		ietl::lanczos<MATRIX, Vecspace> lanczos(Rmat_, vec);
-		ietl::lanczos_iteration_nlowest<value_type> iter(50000, 5, 500.*(numeric_limits<value_type>::epsilon(),
-				std::pow(numeric_limits<value_type>::epsilon(), 2./3.) ) );
-		try{
-			lanczos.calculate_eigenvalues(iter, mygen);
-	   		eigen_=lanczos.eigenvalues();
-	   		err_=lanczos.errors();
-	   		mult_ = lanczos.multiplicities();
-  	 	}
-	 	catch(std::runtime_error& e){
-			 cout<<e.what()<<endl;
-
-	 	}
-		start = eigen_.begin();
-	 	end = eigen_.begin()+5;
-		try{
-		    	lanczos.eigenvectors(start, end, back_inserter(eigenvec_), info, mygen);
-    		}
-    		catch(std::runtime_error& e){
-			cout<<e.what()<<endl;
-		}
-	std::vector<uvector>::iterator it = eigenvec_.begin();	
-	copy(it->begin(), it->end(), res);
-	eigenvec_.clear();
-	eigen_.clear();
-	mult_.clear();
-	err_.clear();
-}
-
-template<class MATRIX, class VECTOR>
-void solver<MATRIX, VECTOR, Lanczos>::re_init(const VECTOR& start){
-	psi_.clear();
-	copy(start.begin(), start.end(), back_inserter(psi_));
-	init();
-} 
-//this concludes implementation of solver 2 which however is not in use as of now
-   */
-		   
-		   
-//Hamiltonian
+//Hamiltonian -- constructor
 template<class T, class MATRIX, class VECTOR, class DiagPolicy, bool Lattice, bool Trap>
-Hamiltonian<T, MATRIX, VECTOR, DiagPolicy, Lattice, Trap>::Hamiltonian(const int& N, const T& L, const T& g, const VECTOR& psi, int upper_limit=1000, bool
-		withit = false)
+Hamiltonian<T, MATRIX, VECTOR, DiagPolicy, Lattice, Trap>::Hamiltonian(const int& N, const T& L, const T& g, const VECTOR& psi, int upper_limit, bool
+		withit)
 		:wi_(withit), output_(psi), result_(N), s(N, L, g, psi), ul_(upper_limit), it_(0){}
 
+// find_groundstate
 template<class T, class MATRIX, class VECTOR, class DiagPolicy, bool Lattice, bool Trap>
 VECTOR Hamiltonian<T, MATRIX, VECTOR, DiagPolicy, Lattice, Trap>::find_groundstate(){
 	for(int i = 0; i<ul_; ++i){
@@ -247,7 +186,8 @@ VECTOR Hamiltonian<T, MATRIX, VECTOR, DiagPolicy, Lattice, Trap>::find_groundsta
     //if we arrive here, there is nothing more to do, we can only return the result.
     return result_;
 }
-	  
+
+
 template<class T, class MATRIX, class VECTOR, class DiagPolicy, bool Lattice, bool Trap>
  template<class In>
 	bool Hamiltonian<T, MATRIX, VECTOR, DiagPolicy, Lattice, Trap>::check(In first, In last, In newvec){

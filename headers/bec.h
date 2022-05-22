@@ -8,7 +8,10 @@
 #include<iterator>
 #include<complex>
 #include<iostream>
-#include"fftw3.h"
+#include "fftw3.h"
+
+//a handy definition...
+const double pi = 4*atan(1.0);
 
 	const std::complex<double> I(0,1);
 	
@@ -133,8 +136,7 @@ template<class LTYPE>
 	return psi;
 }
 namespace Mean_Op{
-	
-const double pi = 4*atan(1.0);	
+
 
 
 template<class VECTOR>
