@@ -1,3 +1,5 @@
+// TODO: Take apart -> solver.h and hamiltonian.h
+
 #ifndef BEC_GROUNDSTATE_H
 #define BEC_GROUNDSTATE_H
 
@@ -15,17 +17,23 @@
 //#include<ietl/vectorspace.h>
 //#include<boost/random/lagged_fibonacci.hpp>
 
-	 
-
-
-//MATRIX should be some Matrix type provided by MTL or ublas.
 using namespace std;
 
-
-
+/**
+ * Link to LAPACK needed during linking phase.
+ * The naming scheme of subroutines is at: https://www.netlib.org/lapack/lug/node24.html
+ */
 #ifndef IETL_LANCZOS_H
-//two VERY handy declarations...
-extern "C" void dsyev_(char* jobz, char* uplo, int* n, double* a, int* lda, double* w, double* work, int* lwork, int* info);	
+/**
+ * Compute eigenvalues for symmetric matrices. For documentation, have a look at:
+ * http://www.netlib.org/lapack/explore-html/d2/d8a/group__double_s_yeigen_ga442c43fca5493590f8f26cf42fed4044.html
+ */
+extern "C" void dsyev_(char* jobz, char* uplo, int* n, double* a, int* lda, double* w, double* work, int* lwork, int* info);
+
+/**
+ * Compute eigenvalues of matrices. For documentation, have a look at:
+ * http://www.netlib.org/lapack/explore-html/dc/dd2/group__double_o_t_h_e_reigen_gaaa6df51cfd92c4ab08d41a54bf05c3ab.html
+ */
 extern "C" void dstev_(char* jobz, int* n, double* d, double* e, double* z, int* ldz, double* work, int* info); 
 #endif
 
@@ -35,6 +43,15 @@ struct FullDiag {};
 struct Lanczos {};
 
 
+/**
+ *
+ * @tparam T input type
+ * @tparam MATRIX matrix type from MTL or uBLAS
+ * @tparam VECTOR vector of elements having type T
+ * @tparam DiagPolicy Alexandrescu's implementation of the Strategy Pattern.
+ * @tparam Lattice Is there a sine-shaped Lattice?
+ * @tparam Trap Is there a trapping potential well?
+ */
 template<class T, class MATRIX, class VECTOR, class DiagPolicy, bool Lattice, bool Trap>
 class solver{};
 
@@ -44,7 +61,12 @@ class solver<T, MATRIX, VECTOR, FullDiag, Lattice,Trap>{
 public:
     solver(const int& N, const double& L, const double& g, const VECTOR& psi);
     ~solver();
-    
+
+    /**
+     *
+     * @tparam Denotes the type of the output
+     * @param res output vector
+     */
     template<class Out>
     void diag(Out res);
     
@@ -61,6 +83,7 @@ private:
     char jobz_;
     MATRIX Rmat_;
 };//specialisation for the full diagonalisation
+
 /*
 //we specialize for Lanczos...
 template<class MATRIX, class VECTOR>
@@ -95,8 +118,8 @@ class solver<MATRIX, VECTOR, Lanczos>{
 		std::vector<uvector> eigenvec_;
 		MATRIX Rmat_;
 
-};//specialisation for Lanczos.
-		*/
+};//specialisation for Lanczos.*/
+
 
 //The little class that could...
 template<class T, class MATRIX, class VECTOR, class DiagPolicy, bool Lattice, bool Trap>
@@ -120,7 +143,7 @@ private:
 
 //////////////////////////////////////////////Implementation starts here/////////////////////////////////////////////////////////////
 
-//solver 1:
+//solver 1: Using LAPACK to solve, rather than IETL with the Lanczos. I don't know why. I think it was faster back then.
 template<class T, class MATRIX, class VECTOR, bool Lattice, bool Trap>
 solver<T, MATRIX, VECTOR, FullDiag, Lattice, Trap>::solver(const int& N, const double&L, const double& g, const VECTOR& psi)
 :N_(N), L_(L), g_(g), ldz_(N_), jobz_('V'), deltax(L_/double(N_) ), q_(40.*pi/L_), psi_(psi), d_(N_), e_(N_), Rmat_(N, N){

@@ -10,47 +10,73 @@
 #include<iostream>
 #include "fftw3.h"
 
-//a handy definition...
-const double pi = 4*atan(1.0);
 
-	const std::complex<double> I(0,1);
-	
+// TODO: Take apart!
+// Definitions
 
-	template<class In, class T>
-    	inline void mod_square(In first, In last, T& init)
-    	{	    
-	typedef typename In::value_type value_type;
-	while(first != last){
-		init+=std::norm<value_type>(*first);
-		++first;
- 		}
-    	}
-  
-   	template<class In, class Out>    
-   	inline void conj_vector(In first, In last, Out res){
-		typedef typename In::value_type value_type;
-   	 	while(first != last){
-	    		*res++ = std::conj<value_type>(*first);
-  			++first;
-		}
-  	}
+// Somehow down to machine precision, but I was young and needed the money...
+const double pi = 4 * atan(1.0);
+
+const std::complex<double> I(0,1);
 
 
+/**
+ * Requires more documentation. In place operations
+ *
+ * @tparam In
+ * @tparam T
+ * @param first
+ * @param last
+ * @param init
+ */
+template<class In, class T>
+  inline void mod_square(In first, In last, T& init) {
+    typedef typename In::value_type value_type;
+    while(first != last){
+      init+=std::norm<value_type>(*first);
+      ++first;
+   }
+}
 
-namespace bec{
-	
-	template<class T, bool Lattice, bool Trap>
-	struct Potential{
-		public:
-			Potential();
-			Potential(T x):x_(x), q_(0.){}
-			Potential(T x, T q):x_(x), q_(q){}
-			inline T operator()(){}
-			
-		private:
-			T x_, q_;
-	};	
-	
+/**
+ * Requires more documentation. In place operations
+ *
+ * @tparam In
+ * @tparam T
+ * @param first
+ * @param last
+ * @param init
+ */
+template<class In, class Out>
+  inline void conj_vector(In first, In last, Out res) {
+  typedef typename In::value_type value_type;
+    while(first != last){
+        *res++ = std::conj<value_type>(*first);
+      ++first;
+  }
+}
+
+namespace bec {
+
+  /**
+   * Template metaprogramming used to be en vogue in the early naughties, so here is a struct for a Potential.
+   *
+   * @tparam T numeric type.
+   * @tparam Lattice harmonic lattice (sine-shaped)
+   * @tparam Trap Whether the system is trapped in a harmonic oscillator potential.
+   */
+  template<class T, bool Lattice, bool Trap>
+  struct Potential{
+    public:
+      Potential();
+      Potential(T x):x_(x), q_(0.){}
+      Potential(T x, T q):x_(x), q_(q){}
+      inline T operator()(){}
+
+    private:
+      T x_, q_;
+  };
+
 	template<class T>
 	struct Potential<T, true, true>{
 		inline T operator()(T x, T q = 0.){
@@ -58,7 +84,7 @@ namespace bec{
 			return 0.5*x*x+0.5*q*q*sinx*sinx;
 		}
 	};
-	
+
 	template<class T>
 	struct Potential<T, false, true>{
 		inline T operator()(T x, T q = 0.){
@@ -67,24 +93,24 @@ namespace bec{
 	};
                 
 	template<class T>
-        struct Potential<T, true, false>{
-		inline T operator()(T x, T q = 0.){
-                    T sinx = sin(q*x);
-                    return 0.5*q*q*sinx*sinx;
+	struct Potential<T, true, false> {
+    inline T operator()(T x, T q = 0.){
+      T sinx = sin(q*x);
+      return 0.5*q*q*sinx*sinx;
 		}
-            };
+  };
         
         
 	template<class T>
-            struct Potential<T, false, false>{
-		inline T operator()(T x, T q = 0.){
-                    return 0.;
-		}
-            };
-        
+  struct Potential<T, false, false>{
+    inline T operator()(T x, T q = 0.){
+            return 0.;
+    }
+  };
+
              
  	template<class VECTOR, bool Lattice, bool Trap>
-	double energy(VECTOR psi, Potential<double, Lattice, Trap> pot, double L, double coupling_strength = 0.){
+	double energy(VECTOR psi, Potential<double, Lattice, Trap> pot, double L, double coupling_strength = 0.) {
 		int N = psi.size();
 		typedef typename VECTOR::value_type value_type;
 		double h = L/double(N);
@@ -97,34 +123,35 @@ namespace bec{
 			double xpos = L/2.-double(i)*L/double(N);
 			integral+=(3.-((i%2==0)?1.:-1.))*(-0.5*conj(psi[i])*(psi[i+1]-2.*psi[i]+psi[i-1])/(h*h)+
 				0.5*coupling_strength*conj(psi[i])*norm(psi[i])*psi[i]+pot(xpos)*norm(psi[i]));
-		}		
+		  }
    	  	return real(L/(3.*double(N))*integral);
-
-        }
+  }
 
 }//namespace bec
 
+// Again... I was very young... Had to show off pointer arithmetics. Dangerous stuff not made for mortal men ;-)
+template <class In, class T>
+inline T  L_2_norm( In first, In last, T range){
+  T init = 0.;
+          int N = last - first;
+  while(first != last)
+    init+=norm(*first++);
+  return sqrt(range/double(N)*init);
+}
 
-	template <class In, class T>
-	inline T  L_2_norm( In first, In last, T range){
-		T init = 0.;
-          	int N = last - first;
-		while(first != last)
-			init+=norm(*first++);          	
-		return sqrt(range/double(N)*init);
-		}
-		
-	template<class LTYPE>
-	class Momentum_Operator{
-		public:
-			Momentum_Operator(LTYPE length);
-			template<class VECTOR>
-			inline VECTOR operator*(VECTOR psi) const;
-			
-		private:
-			LTYPE length_;
-		
-	};
+template<class LTYPE>
+class Momentum_Operator{
+  public:
+    Momentum_Operator(LTYPE length);
+    template<class VECTOR>
+    inline VECTOR operator*(VECTOR psi) const;
+
+  private:
+    LTYPE length_;
+
+};
+
+// Implementation of Momentum_Operator
 template<class LTYPE>
 Momentum_Operator<LTYPE>::Momentum_Operator(LTYPE length):length_(length){}
 
@@ -132,11 +159,14 @@ template<class LTYPE>
  template<class VECTOR>
   inline VECTOR Momentum_Operator<LTYPE>::operator*(VECTOR psi) const{
 	for(int i = 0; i<psi.size(); ++i)
-		psi[i] *= (double(i)<double(psi.size())/2.)?2.*pi/(length_)*double(i): -2.*pi/(length_)*double(psi.size()-i);
+		psi[i] *= (double(i) < double(psi.size())/2.)
+            ? 2.*pi/(length_)*double(i)
+            : -2.*pi/(length_)*double(psi.size()-i);
 	return psi;
 }
-namespace Mean_Op{
 
+
+namespace Mean_Op{
 
 
 template<class VECTOR>

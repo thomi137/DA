@@ -21,7 +21,7 @@ int main(){
 	copy(data.begin(), data.end(), ostream_iterator<double>(cout, "\n") );
 	cout<<"&"<<endl;
 	
-	Hamiltonian<Matrix, Vector, FullDiag, bool, bool> H(N, L, g, data, 5000, true);
+	Hamiltonian<double, Matrix, Vector, FullDiag, true, true> H(N, L, g, data, 5000, true);
 	
 	Vector result = H.find_groundstate();
 

@@ -1,9 +1,9 @@
-#include "headers/BEC_Groundstate.h"
 #include <iostream>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
+#include "../headers/BEC_Groundstate.h"
 
 using namespace std;
 using namespace boost::numeric::ublas;
@@ -18,7 +18,7 @@ int main(){
         Vector data(N, 1./sqrt(2.*pi) );
 	double g = 0.1; 
 
-	Hamiltonian<Matrix, Vector, FullDiag> H(N, L, g, data, 5000, true);
+	Hamiltonian<double, Matrix, Vector, FullDiag, false, true> H(N, L, g, data, 5000, true);
 	
 	Vector result = H.find_groundstate();
 	copy(result.begin(), result.end(), ostream_iterator<double>(cout,"\n"));
