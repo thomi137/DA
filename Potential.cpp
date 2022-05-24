@@ -5,6 +5,8 @@
 #include <cmath>
 #include <climits>
 #include <iterator>
+
+#include <boost/math/constants/constants.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
@@ -12,7 +14,7 @@
 using namespace std;
 
 int main (){
-    const double pi = 4*atan(1.0);
+    const double pi = boost::math::constants::pi<double>();
     double L = 10.;
     int N = 1024;
     double deltax = L/double(N);

@@ -7,54 +7,55 @@
 #include "fftw3.h"
 
 
-namespace fft{
-struct Forward  {
-	static const int d = FFTW_FORWARD;
-	};
-	
-struct Backward {
-	static const int d = FFTW_BACKWARD;
-	};
+namespace fft {
 
-template<class Direction>
-struct TransformDirection{
-	static const int direction = Direction::d;
-	};
+  struct Forward  {
+    static const int d = FFTW_FORWARD;
+  };
+
+  struct Backward {
+    static const int d = FFTW_BACKWARD;
+  };
+
+  template<class Direction>
+  struct TransformDirection{
+    static const int direction = Direction::d;
+  };
 
 
-typedef TransformDirection<Forward>  forward;
-typedef TransformDirection<Backward> backward;
+  typedef TransformDirection<Forward>  forward;
+  typedef TransformDirection<Backward> backward;
 
-struct Measure {
-	static const unsigned flag = FFTW_MEASURE;
-};
+  struct Measure {
+    static const unsigned flag = FFTW_MEASURE;
+  };
 
-struct Estimate {
-	static const unsigned flag = FFTW_ESTIMATE;
-};
-	
-template<
-	class DirectionPolicy,
-	class PlanPolicy,
-	class VECTOR
-	>
-class FTImpl{
-	public:	
-		FTImpl(const VECTOR& input, int dimension);
-		//copy constructor does suit so far...
-		~FTImpl();
-		
-		std::vector<std::complex<double> > exec();
-		
-	
-	
-	private:
-		int N_, dim_;	
-		fftw_complex* in;
-		fftw_complex* out;
-		std::vector<std::complex<double> > cop_;
-		std::vector<std::complex<double> >::iterator it;
-		fftw_plan p;
+  struct Estimate {
+    static const unsigned flag = FFTW_ESTIMATE;
+  };
+
+  template<
+    class DirectionPolicy,
+    class PlanPolicy,
+    class VECTOR
+    >
+  class FTImpl{
+    public:
+      FTImpl(const VECTOR& input, int dimension);
+      //copy constructor does suit so far...
+      ~FTImpl();
+
+      std::vector<std::complex<double> > exec();
+
+
+
+    private:
+      int N_, dim_;
+      fftw_complex* in;
+      fftw_complex* out;
+      std::vector<std::complex<double> > cop_;
+      std::vector<std::complex<double> >::iterator it;
+      fftw_plan p;
 };
 
 ///////////////////////////// Implementation starts here... ///////////////////////////////////////////////////
