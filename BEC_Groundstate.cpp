@@ -1,9 +1,6 @@
 #include <iostream>
 #include <vector> 
-#include <algorithm>
-#include <functional>
 #include <cmath>
-#include <climits>
 #include <iterator>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
@@ -47,13 +44,10 @@ H(i,j)=(i==j?1/(deltax*deltax)+g*data[i]*data[i]+xpos*xpos*0.5+q*q*0.5*sinx*sinx
 				:((i==j-1) || (i==j+1)? -0.5/(deltax*deltax):0) );
 		}
 	}
-	//std::cout<<H;
-	
+
 	char jobz = 'V';
 	char uplo = 'U';
 	int n = H.size1();
-	//double* A = new double[];
-	//A=m;
 	int lda = n;
 	int lwork = 3*n-1;
 	double* work = new double[lwork];	

@@ -19,7 +19,7 @@ namespace bec {
   typedef double bec_t;
 
   // Goes without words
-  const bec_t pi = boost::math::constants::pi<bec_t> pi();
+  const bec_t pi = boost::math::constants::pi<bec_t>();
 
   // Imaginary unit
   const std::complex<bec_t> I(0,1);
