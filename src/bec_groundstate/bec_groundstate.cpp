@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <iterator>
+#include <boost/numeric/conversion/cast.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
@@ -27,18 +27,20 @@ typedef std::vector<double> StlVec;
 namespace bec {
 
 void BecGroundstate::execute() {
-    double L = 10.;
     int N = 1024;
-    const double q = pi*40./L;
-    double deltax = L/double(N);
-    double g=0;
 
-    std::vector<double> eigen(N);
+    bec_t castN = boost::numeric_cast<bec_t>(N);
+    bec_t L = 10.;
+    bec_t g=0;
+    const bec_t q = pi*40./L;
+    bec_t deltax = L/castN;
+
+    std::vector<bec_t> eigen(N);
 
     Vector data(N);
     for(size_t i = 0; i<N; ++i){
-      double xpos =L*0.5-double(i)*L/double(N);
-      data[i]=1./sqrt(2*pi)*exp(-xpos*xpos/2.);
+      double xpos = L * 0.5-double(i)*L/castN;
+      data[i]=1./boost::math::constants::root_two_pi<bec_t>()*exp(-xpos*xpos/2.);
     }
     matrix<double> H(N,N);
     for(size_t i=0; i<H.size1();++i){
