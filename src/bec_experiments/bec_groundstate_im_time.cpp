@@ -4,10 +4,10 @@
 #include<cmath>
 #include<complex>
 
-#include "bec_groundstate.h"
-#include"fftw3.h"
-#include"bec.h"
-#include"split_step.h"
+#include "bec.h"
+#include "bec_experiments/bec_groundstate.h"
+#include "fftw3.h"
+#include "split_step.h"
 
 using namespace boost::numeric::ublas;
 
@@ -28,7 +28,7 @@ namespace bec {
     Cvector groundstate(N);
     for (int i = 0; i < groundstate.size(); ++i) {
       double xpos = L * 0.5 - double(i) * L / castN;
-      groundstate[i] = 1. / sqrt(sqrt(pi)) * exp(-xpos * xpos / 2.);
+      groundstate[i] = 1. / sqrt(root_pi) * exp(-1 * pow(xpos,2) / 2.);
     }
 
     for (int i = 0; i < 20000; ++i) {

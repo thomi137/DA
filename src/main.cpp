@@ -6,8 +6,8 @@
 #include <iostream>
 #include <iterator>
 
+#include "bec_experiments/bec_groundstate.h"
 #include "options.hpp"
-#include "bec_groundstate.h"
 
 int main(int argc, char* argv[]) {
   bec::BecOptions options = bec::BecOptions(argc, argv);

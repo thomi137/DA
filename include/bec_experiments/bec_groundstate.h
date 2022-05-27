@@ -5,7 +5,7 @@
 #ifndef BEC_LATTICE_KICK_BEC_GROUNDSTATE_H
 #define BEC_LATTICE_KICK_BEC_GROUNDSTATE_H
 
-#include "experiment.h"
+#include "bec_experiments/experiment.h"
 
 namespace bec {
 
@@ -21,6 +21,10 @@ namespace bec {
     void execute() override;
   };
 
+  class BecExperimentKick : public Experiment {
+    ~BecExperimentKick() override = default;
+    void execute() override
+  };
 
 } // namespace bec
 

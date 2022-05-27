@@ -10,8 +10,8 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
-#include "../../include/bec.h"
-#include "../../include/bec_groundstate/bec_groundstate.h"
+#include "bec.h"
+#include "bec_experiments/bec_groundstate.h"
 
 using namespace std;
 using namespace boost::numeric::ublas;

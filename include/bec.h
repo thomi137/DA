@@ -28,6 +28,7 @@ namespace bec {
 
   // Goes without words
   const bec_t pi = boost::math::constants::pi<bec_t>();
+  const bec_t root_pi = boost::math::constants::root_pi<bec_t>();
 
   // Imaginary unit
   const std::complex<bec_t> I(0,1);

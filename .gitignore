@@ -21,3 +21,4 @@ _deps
 
 # Python
 .python-version
+/python/.ipynb_checkpoints/

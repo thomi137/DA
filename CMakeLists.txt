@@ -12,9 +12,6 @@ set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-file(GLOB SOURCES "*.cpp")
-
 include_directories(include)
 
 # NOTE: Invoke cmake with -DBLAS_LIBRARIES=<path_to_blas> -DLAPACK_LIBRARIES=<path_to_blas
@@ -45,12 +42,15 @@ set_target_properties(
 add_library(
         bec_groundstate
         STATIC
-        src/bec_groundstate/bec_groundstate.cpp
-        src/bec_groundstate/bec_groundstate_im_time.cpp
-        )
+        src/bec_experiments/bec_groundstate.cpp
+        src/bec_experiments/bec_groundstate_im_time.cpp
+        src/bec_hamiltonian/bec_hamiltonian.cpp
+        src/bec_hamiltonian/solver.cpp
+        src/bec_experiments/bec_experiment_kick.cpp)
 target_include_directories(
         bec_groundstate
-        PUBLIC include/bec_groundstate
+        PUBLIC include/bec_experiments
+        PUBLIC include/bec_hamiltonian
         )
 target_link_libraries(
         bec_groundstate
@@ -59,11 +59,7 @@ target_link_libraries(
         LAPACK
         )
 
-
-set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
-set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
-
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp src/bec_hamiltonian/bec_hamiltonian.cpp)
 set_target_properties(
         ${PROJECT_NAME}
         PROPERTIES
@@ -76,7 +72,3 @@ target_link_libraries(
         ${PROJECT_NAME}
         bec_groundstate
         )
-#[[
-target_include_directories(
-        ${PROJECT_NAME}
-        include)]]
