@@ -1,14 +1,15 @@
 #ifndef BEC_H
 #define BEC_H
 
-#include<cmath>
-#include<algorithm>
-#include<functional>
-#include<vector>
-#include<iterator>
-#include<complex>
-#include<iostream>
+#include <algorithm>
+#include <cmath>
+#include <functional>
+#include <vector>
+#include <iterator>
+#include <complex>
+#include <iostream>
 #include <boost/math/constants/constants.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
 
 #include "fftw3.h"
 
@@ -17,12 +18,36 @@ namespace bec {
 
   // We're living in a 64 bit world now. It's no longer 2003, long double is here...
   typedef double bec_t;
+  typedef fftw_complex complex_c_type;
+  typedef std::complex<bec_t> complex_type;
+  typedef std::vector<bec_t> Vector;
+  typedef std::vector<complex_type>::size_type bec_cvec_size_t;
+  typedef std::vector<complex_type> Cvector;
+  typedef boost::numeric::ublas::matrix<bec_t> Matrix;
+
 
   // Goes without words
   const bec_t pi = boost::math::constants::pi<bec_t>();
 
   // Imaginary unit
   const std::complex<bec_t> I(0,1);
+
+  struct BecParameters {
+    int period, N;
+    bec_t K , g, maxt, L;
+
+    BecParameters(): period(1000), N(1024), K(0.1), g(0.1), maxt(20.), L(20.) {};
+
+    template<typename T>
+    T getCastPeriod() const {
+      return boost::numeric_cast<T>(period);
+    }
+
+    template<typename T>
+    T getCastPointSize() const {
+      return boost::numeric_cast<T>(N);
+    }
+  };
 
   /**
    * Calculates sum_i(x_i*x_i^star), or the squared modulus of a vector.
@@ -74,7 +99,7 @@ namespace bec {
   struct Potential{
     public:
       Potential();
-      Potential(T x):x_(x), q_(0.){}
+      explicit Potential(T x):x_(x), q_(0.){}
       Potential(T x, T q):x_(x), q_(q){}
       inline T operator() () {}
 
@@ -82,29 +107,29 @@ namespace bec {
       T x_, q_;
   };
 
-	template<class T>
-	struct Potential<T, true, true>{
-		inline T operator()(T x, T q){
-			T sinx = sin(q*x);
-			return (0.5*x*x) + (0.5*q*q*sinx*sinx);
-		}
-	};
+  template<class T>
+  struct Potential<T, true, true>{
+          inline T operator()(T x, T q){
+                  T sinx = sin(q*x);
+                  return (0.5*x*x) + (0.5*q*q*sinx*sinx);
+          }
+  };
 
   // Trapped potential without a lattice
-	template<class T>
-	struct Potential<T, false, true>{
-		inline T operator()(T x, T q = 0.){
-			return 0.5*x*x;
-		}
-	};
+  template<class T>
+  struct Potential<T, false, true>{
+          inline T operator()(T x, T q = 0.){
+                  return 0.5*x*x;
+          }
+  };
 
   // Free potential in a lattice
-	template<class T>
-	struct Potential<T, true, false> {
+  template<class T>
+  struct Potential<T, true, false> {
     inline T operator()(T x, T q = 0.){
-      T sinx = sin(q*x);
-      return 0.5*q*q*sinx*sinx;
-		}
+    T sinx = sin(q*x);
+    return 0.5*q*q*sinx*sinx;
+    }
   };
         
   // Free particle. No potential.

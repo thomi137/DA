@@ -9,9 +9,10 @@ namespace bec {
 
   class Experiment {
   public:
-   virtual void execute() = 0;
+    virtual ~Experiment() = default;
+    virtual void execute() = 0;
   };
 
-}
+} // namespace bec
 
 #endif // BEC_LATTICE_KICK_EXPERIMENT_H

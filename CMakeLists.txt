@@ -9,10 +9,9 @@ project(bec_lattice_kick
 
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_STANDARD 11)
-Set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "-lm -lfftw3")
-set(CMAKE_C_FLAGS   "-lm -lfftw3")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 
 file(GLOB SOURCES "*.cpp")
 
@@ -36,15 +35,27 @@ else()
         message(FATAL_ERROR "Boost not found on system")
 endif()
 
-link_directories(/usr/local/lib)
-
 add_library(fftw3 STATIC IMPORTED)
+set_target_properties(
+        fftw3
+        PROPERTIES
+        IMPORTED_LOCATION /usr/local/lib/libfftw3.a
+        )
 
-add_library(bec_groundstate STATIC src/bec_groundstate/bec_groundstate.cpp)
-target_include_directories(bec_groundstate PUBLIC include/bec_groundstate)
+add_library(
+        bec_groundstate
+        STATIC
+        src/bec_groundstate/bec_groundstate.cpp
+        src/bec_groundstate/bec_groundstate_im_time.cpp
+        )
+target_include_directories(
+        bec_groundstate
+        PUBLIC include/bec_groundstate
+        )
 target_link_libraries(
         bec_groundstate
         PUBLIC Boost::program_options
+        PRIVATE fftw3
         LAPACK
         )
 

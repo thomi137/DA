@@ -26,12 +26,12 @@ namespace split_step{
     std::vector<std::complex<double> > kfac(N);
                       std::vector<std::complex<double> > transform(N);
     for (unsigned i = 0; i<N; ++i) {
-      kvec[i]= (double(i)<double(N)/2.)?2.*pi/(L)*double(i): -2.*pi/(L)*double(N-i);
+      kvec[i]= (double(i)<double(N)/2.)?2.*bec::pi/(L)*double(i): -2.*bec::pi/(L)*double(N-i);
               kfac[i]= exp(-bec::I*deltat*omega/2.*kvec[i]*kvec[i]/2.);
     }
     transform=FourierTransform<fft::forward, fft::Estimate>(data);
     std::transform(transform.begin(), transform.end(), kfac.begin(), transform.begin(), std::multiplies<std::complex<double> >() );
-    std::transform(transform.begin(), transform.end(), transform.begin(),std::bind2nd(std::divides<std::complex<double> >(), N) );
+    std::transform(transform.begin(), transform.end(), transform.begin(), [&N](std::complex<double> el) -> std::complex<double>{ return el / double(N); } );
     data=FourierTransform<fft::backward, fft::Estimate>(transform);
 
     for(unsigned int i = 0; i<N; ++i){
@@ -42,7 +42,7 @@ namespace split_step{
 
     transform=FourierTransform<fft::forward, fft::Estimate>(data);
     std::transform(transform.begin(), transform.end(), kfac.begin(), transform.begin(), std::multiplies<std::complex<double> >() );
-    std::transform(transform.begin(), transform.end(), transform.begin(),bind2nd(std::divides<std::complex<double> >(), N) );
+    std::transform(transform.begin(), transform.end(), transform.begin(),[&N](std::complex<double> el) -> std::complex<double>{ return el / double(N); } );
     data=FourierTransform<fft::backward, fft::Estimate>(transform);
 
     return data;
@@ -55,7 +55,6 @@ namespace split_step{
                                                       bec::Potential<T, Lattice, Trap> pot) {
       const double pi = 4.*atan(1.);
       double q = pi*40./L;
-      std::complex<double>I(0,1);
       unsigned int N = data.size();
       std::vector<std::complex<double> > kvec(N);
       std::vector<std::complex<double> > kfac(N);
@@ -66,7 +65,7 @@ namespace split_step{
       }
       transform=FourierTransform<fft::forward, fft::Estimate>(data);
       std::transform(transform.begin(), transform.end(), kfac.begin(), transform.begin(), std::multiplies<std::complex<double> >() );
-      std::transform(transform.begin(), transform.end(), transform.begin(),std::bind2nd(std::divides<std::complex<double> >(), N) );
+      std::transform(transform.begin(), transform.end(), transform.begin(),[&N](std::complex<double> el) -> std::complex<double> { return el / double(N); } );
       data=FourierTransform<fft::backward, fft::Estimate>(transform);
 
       for(unsigned int i = 0; i<N; ++i){
@@ -77,7 +76,7 @@ namespace split_step{
 
       transform=FourierTransform<fft::forward, fft::Estimate>(data);
       std::transform(transform.begin(), transform.end(), kfac.begin(), transform.begin(), std::multiplies<std::complex<double> >() );
-      std::transform(transform.begin(), transform.end(), transform.begin(),bind2nd(std::divides<std::complex<double> >(), N) );
+      std::transform(transform.begin(), transform.end(), transform.begin(), [&N](std::complex<double> el) -> std::complex<double> { return el / double(N); });
       data=FourierTransform<fft::backward, fft::Estimate>(transform);
 
       return data;
