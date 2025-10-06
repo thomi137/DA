@@ -45,12 +45,12 @@ namespace bec {
       }
     }
 
-   po::variables_map get_variables_map() {return vm_;}
+   static po::variables_map get_variables_map() {return vm_;}
 
   private:
     int argc_;
     char** argv_;
-    po::variables_map vm_;
+    static po::variables_map vm_;
   };
 
 }

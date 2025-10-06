@@ -13,15 +13,13 @@ namespace bec {
 
     BecParameters params;
     auto [period, N, K, g, maxt, L] = params;
-    bec_t castN = boost::numeric_cast<bec_t>(N);
-    bec_t  castPeriod = boost::numeric_cast<bec_t>(period);
 
-    const double deltat = 2.*pi/double(period);
+    const double deltat = 2.* pi/double(period);
 
     Vector groundstate(N, 100.);
     Cvector data(N);
-    Hamiltonian<bec_t, Matrix, Vector, true, true> GP(N, L, g, groundstate, 50000, true);
-    groundstate=GP.find_groundstate();
+    Hamiltonian GP(N, L, g, groundstate, true);
+    groundstate = GP.find_groundstate();
     copy(groundstate.begin(), groundstate.end(), data.begin());
     std::cout<<"System size"<<'\t'<<"Points"<<'\t'<<"Coupling"<<'\t'<<"deltat"<<std::endl;
     std::cout<<L<<'\t'<<N<<'\t'<<g<<'\t'<<deltat<<std::endl;

@@ -58,7 +58,7 @@ class solver{};
 
 //we specialize...
 template<class T, class MATRIX, class VECTOR, bool Lattice, bool Trap>
-class solver<T, MATRIX, VECTOR, FullDiag, Lattice,Trap>{
+class solver<T, MATRIX, VECTOR, FullDiag, Lattice, Trap>{
 public:
     solver(const int& N, const double& L, const double& g, const VECTOR& psi);
     ~solver();

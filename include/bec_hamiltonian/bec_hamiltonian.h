@@ -9,20 +9,19 @@
 
 namespace bec {
 
-  template<class T, class M, class V, bool Lattice, bool Trap>
-  class Hamiltonian{
+  class Hamiltonian {
   public:
-    Hamiltonian(const int& N, const T& L, const T& g, const V& psi, int upper_limit=1000, bool withit=false);
-    V find_groundstate();
-
+    Hamiltonian(const int &N, const bec_t &L, const bec_t &g, const Vector &psi, bool with_iterations);
+    Vector find_groundstate();
+  private:
     template<class In>
     bool check(In first, In last, In newvec);
 
-  private:
-    Solver<T, M, V, Lattice, Trap> s;
-    V output_, result_;
-    bool wi_;
-    int ul_, it_;
+    Solver s;
+    bec::Potential<bec_t , true, true> pot;
+    Vector output_, result_;
+    bool wi_ = false;
+    int ul_, it_ = 0;
   };
 
 }

@@ -10,20 +10,24 @@
 namespace bec {
 
   class BecGroundstate : public Experiment {
+
   public:
     ~BecGroundstate() override = default;
     void execute() override;
   };
 
   class BecGroundstateImTime : public Experiment {
+
   public:
     ~BecGroundstateImTime() override = default;
     void execute() override;
   };
 
   class BecExperimentKick : public Experiment {
+
+  public:
     ~BecExperimentKick() override = default;
-    void execute() override
+    void execute() override;
   };
 
 } // namespace bec

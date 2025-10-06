@@ -12,7 +12,8 @@
 int main(int argc, char* argv[]) {
   bec::BecOptions options = bec::BecOptions(argc, argv);
   // bec::BecGroundstate exp;
-  bec::BecGroundstateImTime exp;
+  // bec::BecGroundstateImTime exp;
+  bec::BecExperimentKick exp;
   exp.execute();
 
 }
