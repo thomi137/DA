@@ -13,7 +13,7 @@ use lapack::*;
 type Direction = Sign;
 type Plan = plan::C2CPlan64;
 
-// Somee usevul Constants
+// Somee useful Constants
 pub const PI: f64 = std::f64::consts::PI;
 pub const FRAC_ROOT_TWO_PI: f64 = 0.398942280401432677939946059934381868_f64;
 pub const E: f64 = std::f64::consts::E;
@@ -23,24 +23,46 @@ const I: c64 = Complex::I;
 pub mod physics {
 
     use num::pow;
+    use crate::linalg::EigenConfig;
 
-    fn potential(location: f64, &wave_number: &f64, trap: bool, lattice: bool) -> f64 {
+    pub struct Hamiltonian {
+        pub pot: Vec<f64>,
+        pub interaction_strength: f64,
+    }
+    impl Hamiltonian {
+        pub fn new(config: EigenConfig, interaction_strength: f64, lattice: bool, trap: bool) -> Hamiltonian {
+            let config = config;
+            let fnum_steps= config.n as f64;
+            let system_width = config.system_width;
+            let wave_number = ( crate::PI * 40. ) / &system_width;
+            let step_size = &system_width / fnum_steps;
+            let mut pot: Vec<f64> = Vec::new();
+            for idx in 0..config.n {
+                let xpos = (&system_width * 0.5) - (idx as f64 * &system_width)/&fnum_steps;
+                pot.push(potential(xpos, &wave_number, &lattice, &trap) );
+            };
+            Hamiltonian{ pot, interaction_strength }
+        }
+    }
+
+    fn potential(location: f64, wave_number: &f64, trap: &bool, lattice: &bool) -> f64 {
+        let sinx = f64::sin( wave_number * location );
+
         match (trap, lattice) {
-            (true, false) => pow(location, 2) + 0.5,
+            (true, false) => &location * &location + 0.5,
             (false, true) => {
-                let sinx = f64::sin( wave_number * location );
-                let pot = 0.5 * pow(sinx, 2) * pow (location, 2);
+                let pot = 0.5 * pow(sinx, 2) * &location * &location;
                 pot
             },
             (true, true) => {
-                let sinx = f64::sin( wave_number * location );
-                let lattice = 0.5 * pow(sinx, 2) * pow (location, 2);
-                let pot = 0.5 * pow(sinx, 2) * pow (location, 2) + 0.5 * pow(sinx, 2) * pow (location, 2);
+                let sinx_sq = pow(sinx, 2);
+                let lattice = 0.5 * &sinx_sq * &location * &location;
+                let pot = 0.5 * &sinx_sq * &location * &location + 0.5 * &sinx_sq * &location * &location;
                 pot
             },
             _ => 0.
         }
-   }
+    }
 }
 
 /// Linear Algebra used.
@@ -52,10 +74,10 @@ pub mod linalg {
         EigenValuesOnly,
         WithEigenvectors
     }
-    fn get_jobz(selection: Jobz) -> char {
+    fn get_jobz(selection: Jobz) -> u8 {
         match selection {
-            Jobz::EigenValuesOnly => 'N',
-            Jobz::WithEigenvectors => 'V',
+            Jobz::EigenValuesOnly => b'N',
+            Jobz::WithEigenvectors => b'V',
         }
     }
 
@@ -63,10 +85,10 @@ pub mod linalg {
         UpperTriangle,
         LowerTriangle
     }
-    fn get_uplo(upperOrLower: Uplo) -> char {
-        match upperOrLower {
-            Uplo::UpperTriangle => 'U',
-            Uplo::LowerTriangle => 'L',
+    fn get_uplo(upper_or_lower: Uplo) -> u8 {
+        match upper_or_lower {
+            Uplo::UpperTriangle => b'U',
+            Uplo::LowerTriangle => b'L',
         }
     }
 
@@ -74,17 +96,19 @@ pub mod linalg {
     ///
     /// Configuration struct for LAPACK Functions in General
     /// Parameters:
-    /// * `jobz`: This has been put into an enum for readability
-    /// * `n`: Matrix order. usize. We only need one rank, since we want a symmetric matrix
+    /// * `job`: Eigenvalues only, or also eigenvectors.
+    /// * `upper_lower`: Upper or lower part of symmetric matrix not 0.
+    /// * `n`: Matrix order. usize. We only need one rank, since we want a symmetric matrix.
+    /// * `system_size`: width of the system
     pub struct EigenConfig {
-        jobz: char,
-        uplo: char,
-        n: i32,
-        system_width: f64,
+        pub jobz: u8,
+        pub uplo: u8,
+        pub n: i32,
+        pub system_width: f64,
     }
     impl EigenConfig {
-        pub fn init(job_size: Jobz, upper_lower: Uplo, step_number: usize, system_width: f64 ) -> EigenConfig {
-            let jobz = get_jobz(job_size);
+        pub fn init(job: Jobz, upper_lower: Uplo, step_number: usize, system_width: f64 ) -> EigenConfig {
+            let jobz = get_jobz(job);
             let uplo = get_uplo(upper_lower);
             let n = step_number as i32;
             let system_width = system_width;

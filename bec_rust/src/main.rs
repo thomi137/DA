@@ -18,15 +18,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         10.
     );
 
-    let fnum_steps= NUM_STEPS as f64;
-    let system_width = 10.;
+    let fnum_steps= config.n as f64;
+    let system_width = config.system_width;
     let interaction_strength  = 5.;
     let wave_number = ( bec_rust::PI * 40. ) / &system_width;
     let step_size = &system_width / fnum_steps;
 
     let mut eigen: Vec<f64> = Vec::with_capacity(NUM_STEPS);
-
     let mut data: Vec<f64> = Vec::with_capacity(NUM_STEPS);
+
     for idx in 0..NUM_STEPS {
         let xpos = (&system_width * 0.5) - (idx as f64 * &system_width)/&fnum_steps;
         data.push( FRAC_ROOT_TWO_PI * f64::exp(- pow(xpos, 2) / 2.) )
@@ -36,7 +36,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for i in 0..NUM_STEPS{
         let xpos = (&system_width * 0.5) - (i as f64 * &system_width)/&fnum_steps;
         let sinx = f64::sin(&wave_number * xpos);
-        let datsq = &data[i] * &data[i];
+        let datsq = data[i] * data[i];
         for j in 0..NUM_STEPS{
             let val: f64 = if i == j {
                 1./(&step_size * &step_size)
@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut info = 2939;
 
     unsafe {
-        dsyev(b'V', b'U', n, &mut a, lda, &mut w, &mut work, lwork, &mut info);
+        dsyev(config.jobz, config.uplo, config.n, &mut a, lda, &mut w, &mut work, lwork, &mut info);
     }
 
     //println!("info is: {info}");
